@@ -5,6 +5,6 @@ class DataController {
 
   List<SaleModel> fetchData() {
     // Implement logic to fetch data from the database
-    return [SaleModel(field1: 'Value1', field2: 'Value2')];
+    return [SaleModel()];
   }
 }

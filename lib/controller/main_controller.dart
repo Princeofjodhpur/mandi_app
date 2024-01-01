@@ -11,10 +11,6 @@ class MainController {
 
   void printData(SaleModel data) {
     // Implement logic to print data
-    print('Printing data: ${data.field1}, ${data.field2}');
-
-    var data = SaleModel(
-      avgWeight: 0,
-    );
+    // print('Printing data: ${data.field1}, ${data.field2}');
   }
 }
