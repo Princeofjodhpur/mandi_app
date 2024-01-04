@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:mandi_app/controller/sale_form_controller.dart';
 import 'package:mandi_app/model/sale_model.dart';
+import 'package:mandi_app/utils/isar_provider.dart';
 
 class SaleFormView extends StatefulWidget {
   const SaleFormView({Key? key}) : super(key: key);
@@ -10,16 +10,20 @@ class SaleFormView extends StatefulWidget {
 }
 
 class _SaleFormViewState extends State<SaleFormView> {
+  final isar = IsarProvider.isar;
   final _formKey = GlobalKey<FormState>();
   SaleModel saleModel = SaleModel();
 
-  void saveForm() {
+  Future<void> saveSaleModel(SaleModel saleModel) async {}
+
+  void saveForm() async {
     if (_formKey.currentState!.validate()) {
       // Save the form
       _formKey.currentState!.save();
 
-      // Save the data using SaleFormController
-      SaleFormController.saveSaleModel(saleModel);
+      await isar.writeTxn(() async {
+        await isar.saleModels.put(saleModel);
+      });
 
       // Reset the form
       saleModel = SaleModel();

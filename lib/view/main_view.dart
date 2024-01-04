@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:mandi_app/view/tabular_view.dart';
 import 'package:mandi_app/view/form_view.dart';
 import 'package:mandi_app/view/print_view.dart';
-import 'package:mandi_app/controller/main_controller.dart';
 
 class MainView extends StatefulWidget {
   const MainView({Key? key}) : super(key: key);
@@ -11,16 +10,9 @@ class MainView extends StatefulWidget {
 }
 
 class _MainViewState extends State<MainView> {
-  final MainController mainController = MainController();
   bool _isExtended = false; // Default extended state (collapsed)
   int _selectedIndex = 2; // Default selected index (Dashboard)
-  late Widget _currentView;
-
-  @override
-  void initState() {
-    super.initState();
-    _currentView = const TabularView(); // Default view is TabularView
-  }
+  Widget _currentView = const TabularView();
 
   @override
   Widget build(BuildContext context) {
@@ -66,10 +58,6 @@ class _MainViewState extends State<MainView> {
               setState(() {
                 switch (index) {
                   case 1:
-                    // Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(builder: (context) => const FormView()),
-                    // );
                     _selectedIndex = index;
                     _currentView = const SaleFormView();
                     break;
@@ -97,8 +85,6 @@ class _MainViewState extends State<MainView> {
                   bottom: BorderSide(width: 1.0, color: Colors.grey),
                 ),
               ),
-              // width: 1300.00,
-              // height: 500.00,
               child: _currentView, // Content view based on navigation
             ),
           ),
