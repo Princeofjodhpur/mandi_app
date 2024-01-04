@@ -77,34 +77,41 @@ class SaleModel {
 
   // Convert a PlutoRow to a SaleModel
   void fromPlutoRow(PlutoRow row) {
-    // id = row.cells['id']?.value;
-    // srNo = (row.cells['srNo']?.value != null) ? row.cells['srNo']?.value : 300,
-    // itemName = row.cells['itemName']?.value;
-    // supplierName = row.cells['supplierName']?.value;
-    // farmerName = row.cells['farmerName']?.value;
-    // vclNo = row.cells['vclNo']?.value;
-    // creationDate = row.cells['creationDate']?.value;
-    // grossWeight = row.cells['grossWeight']?.value;
-    // netWeight = row.cells['netWeight']?.value;
-    // avgWeight = row.cells['avgWeight']?.value;
+    id = row.cells['id']?.value;
+    srNo = row.cells['srNo']?.value;
+    itemName = row.cells['itemName']?.value;
+    supplierName = row.cells['supplierName']?.value;
+    farmerName = row.cells['farmerName']?.value;
+    vclNo = row.cells['vclNo']?.value;
+    creationDate = DateTime.parse(row.cells['creationDate']?.value);
+    grossWeight = double.parse(row.cells['grossWeight']!.value.toString());
+    netWeight =
+        double.tryParse(row.cells['netWeight']?.value?.toString() ?? '0.0')!;
+    avgWeight =
+        double.tryParse(row.cells['avgWeight']?.value?.toString() ?? '0.0')!;
     // w[0] = row.cells['w1']?.value;
-    // frightRate = row.cells['frightRate']?.value;
-    // otherCharges = row.cells['otherCharges']?.value;
-    // labourRate = row.cells['labourRate']?.value;
-    // sellerRate = row.cells['sellerRate']?.value;
-    // customerRate = row.cells['customerRate']?.value;
-    // customerName = row.cells['customerName']?.value;
-    // customerNug = row.cells['customerNug']?.value;
-    // lot = row.cells['lot']?.value;
-    // sellerNug = row.cells['sellerNug']?.value;
-    // cut = row.cells['cut']?.value;
+    frightRate =
+        double.tryParse(row.cells['frightRate']?.value?.toString() ?? '0.0')!;
+    otherCharges =
+        double.tryParse(row.cells['otherCharges']?.value?.toString() ?? '0.0')!;
+    labourRate =
+        double.tryParse(row.cells['labourRate']?.value?.toString() ?? '0.0')!;
+    sellerRate =
+        double.tryParse(row.cells['sellerRate']?.value?.toString() ?? '0.0')!;
+    customerRate =
+        double.tryParse(row.cells['customerRate']?.value?.toString() ?? '0.0')!;
+    customerName = row.cells['customerName']?.value;
+    customerNug = row.cells['customerNug']?.value;
+    lot = row.cells['lot']?.value;
+    sellerNug = row.cells['sellerNug']?.value;
+    cut = row.cells['cut']?.value;
   }
 
   // Convert a SaleModel to a PlutoRow
   PlutoRow toPlutoRow() {
     return PlutoRow(
       cells: {
-        // 'id': PlutoCell(value: id),
+        'id': PlutoCell(value: id),
         'srNo': PlutoCell(value: srNo),
         'itemName': PlutoCell(value: itemName),
         'supplierName': PlutoCell(value: supplierName),
@@ -127,5 +134,72 @@ class SaleModel {
         'cut': PlutoCell(value: cut),
       },
     );
+  }
+
+  void updateField(String key, dynamic value) {
+    switch (key) {
+      case 'srNo':
+        srNo = value as int;
+        break;
+      case 'itemName':
+        itemName = value as String;
+        break;
+      case 'supplierName':
+        supplierName = value as String;
+        break;
+      case 'farmerName':
+        farmerName = value as String;
+        break;
+      case 'vclNo':
+        vclNo = value as String;
+        break;
+      case 'creationDate':
+        creationDate = DateTime.parse(value);
+        break;
+      case 'grossWeight':
+        grossWeight = value as double;
+        break;
+      case 'netWeight':
+        netWeight = value as double;
+        break;
+      case 'avgWeight':
+        avgWeight = value as double;
+        break;
+      case 'w':
+        w = value as List<int>;
+        break;
+      case 'frightRate':
+        frightRate = value as double;
+        break;
+      case 'otherCharges':
+        otherCharges = value as double;
+        break;
+      case 'labourRate':
+        labourRate = value as double;
+        break;
+      case 'sellerRate':
+        sellerRate = value as double;
+        break;
+      case 'customerRate':
+        customerRate = value as double;
+        break;
+      case 'customerName':
+        customerName = value as String;
+        break;
+      case 'customerNug':
+        customerNug = value as int;
+        break;
+      case 'lot':
+        lot = value as int;
+        break;
+      case 'sellerNug':
+        sellerNug = value as int;
+        break;
+      case 'cut':
+        cut = value as String;
+        break;
+      default:
+        throw Exception('Invalid field: $key');
+    }
   }
 }

@@ -12,14 +12,21 @@ class TabularView extends StatefulWidget {
 }
 
 class _TabularViewState extends State<TabularView> {
-  late final PlutoGridStateManager stateManager;
+  late PlutoGridStateManager stateManager;
   final isar = IsarProvider.isar;
 
   void updateDatabase(PlutoGridOnChangedEvent plutoGridOnChangedEvent) {
     // update the isar database when a cell is edited
     var row = stateManager.getRowByIdx(plutoGridOnChangedEvent.rowIdx);
     var object = SaleModel()..fromPlutoRow(row!);
-    isar.saleModels.put(object);
+
+    // Get the field that was changed
+    var field = plutoGridOnChangedEvent.column.field;
+
+    // Update the specific field in the object
+    object.updateField(field, plutoGridOnChangedEvent.value);
+
+    isar.writeTxn(() async => isar.saleModels.put(object));
   }
 
   @override

@@ -2,6 +2,13 @@ import 'package:pluto_grid/pluto_grid.dart';
 
 final tableViewColumns = <PlutoColumn>[
   PlutoColumn(
+    title: 'Id',
+    field: 'id',
+    type: PlutoColumnType.number(),
+    enableEditingMode: false,
+    hide: true,
+  ),
+  PlutoColumn(
     title: 'Sr No',
     field: 'srNo',
     type: PlutoColumnType.number(),
