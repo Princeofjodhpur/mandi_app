@@ -1,4 +1,5 @@
 import 'package:isar/isar.dart';
+import 'package:pluto_grid/pluto_grid.dart';
 
 part 'sale_model.g.dart';
 
@@ -30,7 +31,7 @@ class SaleModel {
   late double otherCharges;
   late double labourRate;
   late double sellerRate;
-  late double custormerRate;
+  late double customerRate;
 
   // Customer details
   late String customerName;
@@ -48,7 +49,7 @@ class SaleModel {
       : avgWeight = 0,
         customerName = '',
         customerNug = 0,
-        custormerRate = 0,
+        customerRate = 0,
         cut = '',
         creationDate = DateTime.now(),
         farmerName = '',
@@ -72,6 +73,60 @@ class SaleModel {
     // Add other required fields here
   }) {
     id = 0; // You can set this to 0 or null, Isar will auto-generate it.
+  }
+
+  // Convert a PlutoRow to a SaleModel
+  void fromPlutoRow(PlutoRow row) {
+    // id = row.cells['id']?.value;
+    // srNo = (row.cells['srNo']?.value != null) ? row.cells['srNo']?.value : 300,
+    // itemName = row.cells['itemName']?.value;
+    // supplierName = row.cells['supplierName']?.value;
+    // farmerName = row.cells['farmerName']?.value;
+    // vclNo = row.cells['vclNo']?.value;
+    // creationDate = row.cells['creationDate']?.value;
+    // grossWeight = row.cells['grossWeight']?.value;
+    // netWeight = row.cells['netWeight']?.value;
+    // avgWeight = row.cells['avgWeight']?.value;
+    // w[0] = row.cells['w1']?.value;
+    // frightRate = row.cells['frightRate']?.value;
+    // otherCharges = row.cells['otherCharges']?.value;
+    // labourRate = row.cells['labourRate']?.value;
+    // sellerRate = row.cells['sellerRate']?.value;
+    // customerRate = row.cells['customerRate']?.value;
+    // customerName = row.cells['customerName']?.value;
+    // customerNug = row.cells['customerNug']?.value;
+    // lot = row.cells['lot']?.value;
+    // sellerNug = row.cells['sellerNug']?.value;
+    // cut = row.cells['cut']?.value;
+  }
+
+  // Convert a SaleModel to a PlutoRow
+  PlutoRow toPlutoRow() {
+    return PlutoRow(
+      cells: {
+        // 'id': PlutoCell(value: id ?? 0),
+        'srNo': PlutoCell(value: srNo),
+        'itemName': PlutoCell(value: itemName),
+        'supplierName': PlutoCell(value: supplierName),
+        'farmerName': PlutoCell(value: farmerName),
+        'vclNo': PlutoCell(value: vclNo),
+        'creationDate': PlutoCell(value: creationDate),
+        'grossWeight': PlutoCell(value: grossWeight),
+        'netWeight': PlutoCell(value: netWeight),
+        'avgWeight': PlutoCell(value: avgWeight),
+        // 'w': PlutoCell(value: w ?? List<int>.filled(10, 0)),
+        'frightRate': PlutoCell(value: frightRate),
+        'otherCharges': PlutoCell(value: otherCharges),
+        'labourRate': PlutoCell(value: labourRate),
+        'sellerRate': PlutoCell(value: sellerRate),
+        'customerRate': PlutoCell(value: customerRate),
+        'customerName': PlutoCell(value: customerName),
+        'customerNug': PlutoCell(value: customerNug),
+        'lot': PlutoCell(value: lot),
+        'sellerNug': PlutoCell(value: sellerNug),
+        'cut': PlutoCell(value: cut),
+      },
+    );
   }
 }
 

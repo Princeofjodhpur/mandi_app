@@ -158,7 +158,7 @@ void _saleModelSerialize(
   writer.writeDateTime(offsets[1], object.creationDate);
   writer.writeString(offsets[2], object.customerName);
   writer.writeLong(offsets[3], object.customerNug);
-  writer.writeDouble(offsets[4], object.custormerRate);
+  writer.writeDouble(offsets[4], object.customerRate);
   writer.writeString(offsets[5], object.cut);
   writer.writeString(offsets[6], object.farmerName);
   writer.writeDouble(offsets[7], object.frightRate);
@@ -187,7 +187,7 @@ SaleModel _saleModelDeserialize(
   object.creationDate = reader.readDateTime(offsets[1]);
   object.customerName = reader.readString(offsets[2]);
   object.customerNug = reader.readLong(offsets[3]);
-  object.custormerRate = reader.readDouble(offsets[4]);
+  object.customerRate = reader.readDouble(offsets[4]);
   object.cut = reader.readString(offsets[5]);
   object.farmerName = reader.readString(offsets[6]);
   object.frightRate = reader.readDouble(offsets[7]);
