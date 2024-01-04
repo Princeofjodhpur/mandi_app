@@ -31,37 +31,51 @@ class _TabularViewState extends State<TabularView> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<SaleModel>>(
-      // First, load the data from the database
-      future: isar.saleModels.where().findAll(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
-        } else if (snapshot.hasError) {
-          return Text('Error: ${snapshot.error}');
-        } else {
-          // Once the data is loaded, start listening for updates
-          return StreamBuilder<List<SaleModel>>(
-            stream: isar.saleModels.where().watch(),
-            initialData: snapshot.data,
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                var rows = snapshot.data!.map((e) => e.toPlutoRow()).toList();
-                return PlutoGrid(
-                    key: ValueKey(DateTime.now()),
-                    columns: tableViewColumns,
-                    rows: rows,
-                    onLoaded: (PlutoGridOnLoadedEvent event) {
-                      stateManager = event.stateManager;
-                    },
-                    onChanged: updateDatabase);
-              } else {
-                return const Center(child: CircularProgressIndicator());
-              }
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Dashboard'),
+        actions: [
+          IconButton(
+            onPressed: () {
+              // Save the changes to the database
+              // stateManager.commit();
             },
-          );
-        }
-      },
+            icon: const Icon(Icons.delete_rounded),
+          ),
+        ],
+      ),
+      body: FutureBuilder<List<SaleModel>>(
+        // First, load the data from the database
+        future: isar.saleModels.where().findAll(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Text('Error: ${snapshot.error}');
+          } else {
+            // Once the data is loaded, start listening for updates
+            return StreamBuilder<List<SaleModel>>(
+              stream: isar.saleModels.where().watch(),
+              initialData: snapshot.data,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  var rows = snapshot.data!.map((e) => e.toPlutoRow()).toList();
+                  return PlutoGrid(
+                      key: ValueKey(DateTime.now()),
+                      columns: tableViewColumns,
+                      rows: rows,
+                      onLoaded: (PlutoGridOnLoadedEvent event) {
+                        stateManager = event.stateManager;
+                      },
+                      onChanged: updateDatabase);
+                } else {
+                  return const Center(child: CircularProgressIndicator());
+                }
+              },
+            );
+          }
+        },
+      ),
     );
   }
 }

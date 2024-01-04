@@ -17,9 +17,6 @@ class _MainViewState extends State<MainView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Mandi Management App'),
-      ),
       body: Row(
         children: [
           // Left pane - Navigation Rail
