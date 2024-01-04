@@ -14,20 +14,33 @@ class _SaleFormViewState extends State<SaleFormView> {
   final _formKey = GlobalKey<FormState>();
   SaleModel saleModel = SaleModel();
 
-  Future<void> saveSaleModel(SaleModel saleModel) async {}
+  Future<void> saveToDatabase(SaleModel saleModel) async {
+    await isar.writeTxn(() async {
+      await isar.saleModels.put(saleModel);
+    });
+  }
 
-  void saveForm() async {
+  void saveAndResetForm() {
     if (_formKey.currentState!.validate()) {
       // Save the form
       _formKey.currentState!.save();
 
-      await isar.writeTxn(() async {
-        await isar.saleModels.put(saleModel);
-      });
+      // Save to database
+      saveToDatabase(saleModel);
 
       // Reset the form
       saleModel = SaleModel();
       _formKey.currentState!.reset();
+
+      // Show a snackbar
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Entry saved successfully!'),
+          duration: Duration(milliseconds: 200),
+          behavior: SnackBarBehavior.floating,
+          width: 230.0,
+        ),
+      );
     }
   }
 
@@ -40,7 +53,7 @@ class _SaleFormViewState extends State<SaleFormView> {
         if ((event.isKeyPressed(LogicalKeyboardKey.controlLeft) ||
                 event.isKeyPressed(LogicalKeyboardKey.controlRight)) &&
             event.isKeyPressed(LogicalKeyboardKey.keyS)) {
-          saveForm();
+          saveAndResetForm();
         }
       },
       child: Scaffold(
@@ -181,7 +194,7 @@ class _SaleFormViewState extends State<SaleFormView> {
           ),
         ),
         floatingActionButton: FloatingActionButton(
-          onPressed: saveForm,
+          onPressed: saveAndResetForm,
           tooltip: 'CTRL + S',
           child: const Icon(Icons.save_rounded),
         ),
