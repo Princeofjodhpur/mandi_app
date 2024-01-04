@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:mandi_app/services/isar_provider.dart';
 import 'package:mandi_app/view/main_view.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await IsarProvider.setup();
   runApp(const MyApp());
 }
 

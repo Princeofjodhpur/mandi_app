@@ -71,7 +71,7 @@ class _MainViewState extends State<MainView> {
                     //   MaterialPageRoute(builder: (context) => const FormView()),
                     // );
                     _selectedIndex = index;
-                    _currentView = const FormView();
+                    _currentView = const SaleFormView();
                     break;
                   case 2:
                     _selectedIndex = index;
