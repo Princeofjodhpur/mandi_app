@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:mandi_app/model/sale_model.dart';
 import 'package:mandi_app/utils/isar_provider.dart';
 
@@ -13,6 +14,10 @@ class _SaleFormViewState extends State<SaleFormView> {
   final isar = IsarProvider.isar;
   final _formKey = GlobalKey<FormState>();
   SaleModel saleModel = SaleModel();
+  SaleModel sale =
+      SaleModel.create(srNo: 34, itemName: 'fd', supplierName: 'd');
+
+  bool checkInputValid = true;
 
   // Constants
   static const String initialValueZero = '0';
@@ -27,134 +32,165 @@ class _SaleFormViewState extends State<SaleFormView> {
 
   // Extracted method for saving and resetting the form
   void saveAndResetForm() {
-    if (_formKey.currentState!.validate()) {
+    if (_formKey.currentState!.validate() && checkInputValid) {
       _formKey.currentState!.save();
       saveToDatabase(saleModel);
       resetForm();
       showSnackBar('Entry saved successfully!');
+    } else {
+      showSnackBar('Wrong Input', color: Colors.red);
     }
   }
 
   // Extracted method for resetting the form
   void resetForm() {
     saleModel = SaleModel();
-    _formKey.currentState!.reset();
+    // _formKey.currentState!.reset();
   }
 
   // Extracted method for showing a snackbar
-  void showSnackBar(String message) {
+  void showSnackBar(String message, {Color color = Colors.green}) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(message),
-        duration: const Duration(milliseconds: 200),
+        backgroundColor: color,
+        duration: const Duration(seconds: 1),
         behavior: SnackBarBehavior.floating,
         width: 230.0,
       ),
     );
   }
 
+  // void wrongInputSnackbar() {
+  //   showSnackBar('Entry not saved!', color: Colors.red);
+  // }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Sale Form View'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: ListView(
-          children: [
-            Form(
-              key: _formKey,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  buildRow([
-                    buildTextFormField('Serial Number', TextInputType.number,
-                        initialValue: initialValueZero,
-                        onSaved: (value) => saleModel.srNo = int.parse(value!)),
-                    buildTextFormField('Item Name', TextInputType.text,
-                        initialValue: initialValueItemName,
-                        onSaved: (value) => saleModel.itemName = value!),
-                    buildTextFormField('Creation Date', TextInputType.datetime,
-                        initialValue:
-                            DateTime.now().toString().substring(0, 10),
-                        onSaved: (value) =>
-                            saleModel.creationDate = DateTime.parse(value!)),
-                  ]),
-                  buildRow([
-                    buildTextFormField('Freight Rate', TextInputType.number,
-                        initialValue: initialValueZero,
-                        onSaved: (value) =>
-                            saleModel.frightRate = double.parse(value!)),
-                    buildTextFormField('Other Charges', TextInputType.number,
-                        initialValue: initialValueZero,
-                        onSaved: (value) =>
-                            saleModel.otherCharges = double.parse(value!)),
-                  ]),
-                  // Add more rows for other fields
-
-                  // Example of dynamic TextFormField generation
-                  buildDynamicRow('W', 4, TextInputType.number),
-
-                  buildRow([
-                    buildTextFormField('Lot', TextInputType.number,
-                        initialValue: initialValueZero,
-                        onSaved: (value) => saleModel.lot = int.parse(value!)),
-                    buildTextFormField(
-                        'Nug (S.Nug/C.Nug)', TextInputType.number,
-                        initialValue: initialValueZero, onSaved: (value) {
-                      saleModel.sellerNug = int.parse(value!);
-                      saleModel.customerNug = int.parse(value);
-                    }),
-                  ]),
-                  buildRow([
-                    buildTextFormField('Labour Rate', TextInputType.number,
-                        initialValue: initialValueZero,
-                        onSaved: (value) =>
-                            saleModel.labourRate = double.parse(value!)),
-                    buildTextFormField('Seller Rate', TextInputType.number,
-                        initialValue: initialValueZero,
-                        onSaved: (value) =>
-                            saleModel.sellerRate = double.parse(value!)),
-                    buildTextFormField('Customer Rate', TextInputType.number,
-                        initialValue: initialValueZero,
-                        onSaved: (value) =>
-                            saleModel.customerRate = double.parse(value!)),
-                  ]),
-                  buildRow([
-                    buildTextFormField('Gross Weight', TextInputType.number,
-                        initialValue: initialValueZero,
-                        onSaved: (value) =>
-                            saleModel.grossWeight = double.parse(value!)),
-                    buildTextFormField('Net Weight', TextInputType.number,
-                        initialValue: initialValueZero,
-                        onSaved: (value) =>
-                            saleModel.netWeight = double.parse(value!)),
-                    buildTextFormField('Avg Weight', TextInputType.number,
-                        initialValue: initialValueZero,
-                        onSaved: (value) =>
-                            saleModel.avgWeight = double.parse(value!)),
-                  ]),
-                  buildRow([
-                    buildTextFormField('Supplier Name', TextInputType.text,
-                        onSaved: (value) => saleModel.supplierName = value!),
-                    buildTextFormField('Farmer Name', TextInputType.text,
-                        onSaved: (value) => saleModel.farmerName = value!),
-                    buildTextFormField('VCL No', TextInputType.text,
-                        onSaved: (value) => saleModel.vclNo = value!),
-                  ]),
-                ],
-              ),
-            ),
-          ],
+    return RawKeyboardListener(
+      focusNode: FocusNode(),
+      autofocus: true,
+      onKey: (event) {
+        if ((event.isKeyPressed(LogicalKeyboardKey.controlLeft) ||
+                event.isKeyPressed(LogicalKeyboardKey.controlRight)) &&
+            event.isKeyPressed(LogicalKeyboardKey.keyS)) {
+          saveAndResetForm();
+        }
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Sale Form View'),
         ),
+        body: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: ListView(
+            children: [
+              Form(
+                key: _formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    buildRow([
+                      buildTextFormField('Serial Number', TextInputType.number,
+                          initialValue: initialValueZero, onSaved: (value) {
+                        int? parsedValue = int.tryParse(value!);
+                        if (parsedValue == null) {
+                          setState(() {
+                            checkInputValid = false;
+                          });
+                        } else {
+                          setState(() {
+                            checkInputValid = true;
+                          });
+                          saleModel.srNo = parsedValue;
+                        }
+                      }),
+                      buildTextFormField('Item Name', TextInputType.text,
+                          initialValue: initialValueItemName,
+                          onSaved: (value) => saleModel.itemName = value!),
+                      buildTextFormField(
+                          'Creation Date', TextInputType.datetime,
+                          initialValue:
+                              DateTime.now().toString().substring(0, 10),
+                          onSaved: (value) =>
+                              saleModel.creationDate = DateTime.parse(value!)),
+                    ]),
+                    buildRow([
+                      buildTextFormField('Freight Rate', TextInputType.number,
+                          initialValue: initialValueZero,
+                          onSaved: (value) =>
+                              saleModel.frightRate = double.parse(value!)),
+                      buildTextFormField('Other Charges', TextInputType.number,
+                          initialValue: initialValueZero,
+                          onSaved: (value) =>
+                              saleModel.otherCharges = double.parse(value!)),
+                    ]),
+                    // Add more rows for other fields
+
+                    // Example of dynamic TextFormField generation
+                    buildDynamicRow('W', 20, TextInputType.number),
+
+                    buildRow([
+                      buildTextFormField('Lot', TextInputType.number,
+                          initialValue: initialValueZero,
+                          onSaved: (value) =>
+                              saleModel.lot = int.parse(value!)),
+                      buildTextFormField(
+                          'Nug (S.Nug/C.Nug)', TextInputType.number,
+                          initialValue: initialValueZero, onSaved: (value) {
+                        saleModel.sellerNug = int.parse(value!);
+                        saleModel.customerNug = int.parse(value);
+                      }),
+                    ]),
+                    buildRow([
+                      buildTextFormField('Labour Rate', TextInputType.number,
+                          initialValue: initialValueZero,
+                          onSaved: (value) =>
+                              saleModel.labourRate = double.parse(value!)),
+                      buildTextFormField('Seller Rate', TextInputType.number,
+                          initialValue: initialValueZero,
+                          onSaved: (value) =>
+                              saleModel.sellerRate = double.parse(value!)),
+                      buildTextFormField('Customer Rate', TextInputType.number,
+                          initialValue: initialValueZero,
+                          onSaved: (value) =>
+                              saleModel.customerRate = double.parse(value!)),
+                    ]),
+                    buildRow([
+                      buildTextFormField('Gross Weight', TextInputType.number,
+                          initialValue: initialValueZero,
+                          onSaved: (value) =>
+                              saleModel.grossWeight = double.parse(value!)),
+                      buildTextFormField('Net Weight', TextInputType.number,
+                          initialValue: initialValueZero,
+                          onSaved: (value) =>
+                              saleModel.netWeight = double.parse(value!)),
+                      buildTextFormField('Avg Weight', TextInputType.number,
+                          initialValue: initialValueZero,
+                          onSaved: (value) =>
+                              saleModel.avgWeight = double.parse(value!)),
+                    ]),
+                    buildRow([
+                      buildTextFormField('Supplier Name', TextInputType.text,
+                          onSaved: (value) => saleModel.supplierName = value!),
+                      buildTextFormField('Farmer Name', TextInputType.text,
+                          onSaved: (value) => saleModel.farmerName = value!),
+                      buildTextFormField('VCL No', TextInputType.text,
+                          onSaved: (value) => saleModel.vclNo = value!),
+                    ]),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: saveAndResetForm,
+          tooltip: 'CTRL + S',
+          child: const Icon(Icons.save_rounded),
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: saveAndResetForm,
-        tooltip: 'CTRL + S',
-        child: const Icon(Icons.save_rounded),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
     );
   }
 

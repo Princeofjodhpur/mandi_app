@@ -65,11 +65,12 @@ class SaleModel {
         srNo = 0,
         supplierName = '',
         vclNo = '',
-        w = List<int>.filled(10, 0);
+        w = List<int>.filled(20, 0);
 
   SaleModel.create({
     required this.srNo,
     required this.itemName,
+    this.supplierName='supplierName',
     // Add other required fields here
   }) {
     id = 0; // You can set this to 0 or null, Isar will auto-generate it.

@@ -61,13 +61,14 @@ class _TabularViewState extends State<TabularView> {
                 if (snapshot.hasData) {
                   var rows = snapshot.data!.map((e) => e.toPlutoRow()).toList();
                   return PlutoGrid(
-                      key: ValueKey(DateTime.now()),
-                      columns: tableViewColumns,
-                      rows: rows,
-                      onLoaded: (PlutoGridOnLoadedEvent event) {
-                        stateManager = event.stateManager;
-                      },
-                      onChanged: updateDatabase);
+                    key: const ValueKey("pluto_grid"),
+                    columns: tableViewColumns,
+                    rows: rows,
+                    onLoaded: (PlutoGridOnLoadedEvent event) {
+                      stateManager = event.stateManager;
+                    },
+                    onChanged: updateDatabase,
+                  );
                 } else {
                   return const Center(child: CircularProgressIndicator());
                 }
