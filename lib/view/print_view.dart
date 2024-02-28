@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:mandi_app/printing/format1.dart';
+
+import '../printing/format2.dart';
+import '../printing/format3.dart';
 
 class PrintView extends StatelessWidget {
-  const PrintView({Key? key}) : super(key: key);
+  PrintView({super.key});
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -19,25 +25,28 @@ class PrintView extends StatelessWidget {
             ],
           ),
         ),
-        floatingActionButton: FloatingActionButton(
+        /*floatingActionButton: FloatingActionButton(
           isExtended: true,
-          onPressed: () {
-            // Implement your logic for printing
+          onPressed: () async {
+
           },
           child: const Icon(Icons.print),
-        ),
-        body: const TabBarView(
+        ),*/
+        body: TabBarView(
           children: [
             // Content for Format 1
-            Center(child: Text('Format 1 Content')),
+            SizedBox(width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height,child: PrintFormatOne()),
             // Content for Format 2
-            Center(child: Text('Format 2 Content')),
-            // Content for Format 3
-            Center(child: Text('Format 3 Content')),
-            // Add more content for additional formats
+            SizedBox(width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height,child: PrintFormatTwo()),
+            SizedBox(width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height,child: PrintFormatThree()),
           ],
         ),
       ),
     );
   }
+
+
 }

@@ -4,7 +4,7 @@ import 'package:mandi_app/view/form_view.dart';
 import 'package:mandi_app/view/print_view.dart';
 
 class MainView extends StatefulWidget {
-  const MainView({Key? key}) : super(key: key);
+  const MainView({super.key});
   @override
   State<MainView> createState() => _MainViewState();
 }
@@ -13,6 +13,7 @@ class _MainViewState extends State<MainView> {
   bool _isExtended = false; // Default extended state (collapsed)
   int _selectedIndex = 2; // Default selected index (Dashboard)
   Widget _currentView = const TabularView();
+
 
   @override
   Widget build(BuildContext context) {
@@ -50,13 +51,14 @@ class _MainViewState extends State<MainView> {
                 label: Text('Prints'),
               ),
             ],
+
             selectedIndex: _selectedIndex, // Default selected index (Dashboard)
             onDestinationSelected: (int index) {
               setState(() {
                 switch (index) {
                   case 1:
                     _selectedIndex = index;
-                    _currentView = const SaleFormView();
+                    _currentView = SaleFormView();
                     break;
                   case 2:
                     _selectedIndex = index;
@@ -64,8 +66,7 @@ class _MainViewState extends State<MainView> {
                     break;
                   case 3:
                     _selectedIndex = index;
-                    _currentView =
-                        const PrintView(); // Assume you have a PrintView widget
+                    _currentView = PrintView(); // Assume you have a PrintView widget
                     break;
                 }
               });

@@ -22,98 +22,108 @@ const SaleModelSchema = CollectionSchema(
       name: r'avgWeight',
       type: IsarType.double,
     ),
-    r'creationDate': PropertySchema(
+    r'basicAmt': PropertySchema(
       id: 1,
+      name: r'basicAmt',
+      type: IsarType.double,
+    ),
+    r'bikriAmt': PropertySchema(
+      id: 2,
+      name: r'bikriAmt',
+      type: IsarType.double,
+    ),
+    r'creationDate': PropertySchema(
+      id: 3,
       name: r'creationDate',
       type: IsarType.dateTime,
     ),
     r'customerName': PropertySchema(
-      id: 2,
+      id: 4,
       name: r'customerName',
       type: IsarType.string,
     ),
     r'customerNug': PropertySchema(
-      id: 3,
+      id: 5,
       name: r'customerNug',
       type: IsarType.long,
     ),
-    r'custormerRate': PropertySchema(
-      id: 4,
-      name: r'custormerRate',
+    r'customerRate': PropertySchema(
+      id: 6,
+      name: r'customerRate',
       type: IsarType.double,
     ),
     r'cut': PropertySchema(
-      id: 5,
+      id: 7,
       name: r'cut',
       type: IsarType.string,
     ),
     r'farmerName': PropertySchema(
-      id: 6,
+      id: 8,
       name: r'farmerName',
       type: IsarType.string,
     ),
     r'frightRate': PropertySchema(
-      id: 7,
+      id: 9,
       name: r'frightRate',
       type: IsarType.double,
     ),
     r'grossWeight': PropertySchema(
-      id: 8,
+      id: 10,
       name: r'grossWeight',
       type: IsarType.double,
     ),
     r'itemName': PropertySchema(
-      id: 9,
+      id: 11,
       name: r'itemName',
       type: IsarType.string,
     ),
     r'labourRate': PropertySchema(
-      id: 10,
+      id: 12,
       name: r'labourRate',
       type: IsarType.double,
     ),
     r'lot': PropertySchema(
-      id: 11,
+      id: 13,
       name: r'lot',
-      type: IsarType.long,
+      type: IsarType.double,
     ),
     r'netWeight': PropertySchema(
-      id: 12,
+      id: 14,
       name: r'netWeight',
       type: IsarType.double,
     ),
     r'otherCharges': PropertySchema(
-      id: 13,
+      id: 15,
       name: r'otherCharges',
       type: IsarType.double,
     ),
     r'sellerNug': PropertySchema(
-      id: 14,
+      id: 16,
       name: r'sellerNug',
       type: IsarType.long,
     ),
     r'sellerRate': PropertySchema(
-      id: 15,
+      id: 17,
       name: r'sellerRate',
       type: IsarType.double,
     ),
     r'srNo': PropertySchema(
-      id: 16,
+      id: 18,
       name: r'srNo',
       type: IsarType.long,
     ),
     r'supplierName': PropertySchema(
-      id: 17,
+      id: 19,
       name: r'supplierName',
       type: IsarType.string,
     ),
     r'vclNo': PropertySchema(
-      id: 18,
+      id: 20,
       name: r'vclNo',
       type: IsarType.string,
     ),
     r'w': PropertySchema(
-      id: 19,
+      id: 21,
       name: r'w',
       type: IsarType.longList,
     )
@@ -155,25 +165,27 @@ void _saleModelSerialize(
   Map<Type, List<int>> allOffsets,
 ) {
   writer.writeDouble(offsets[0], object.avgWeight);
-  writer.writeDateTime(offsets[1], object.creationDate);
-  writer.writeString(offsets[2], object.customerName);
-  writer.writeLong(offsets[3], object.customerNug);
-  writer.writeDouble(offsets[4], object.customerRate);
-  writer.writeString(offsets[5], object.cut);
-  writer.writeString(offsets[6], object.farmerName);
-  writer.writeDouble(offsets[7], object.frightRate);
-  writer.writeDouble(offsets[8], object.grossWeight);
-  writer.writeString(offsets[9], object.itemName);
-  writer.writeDouble(offsets[10], object.labourRate);
-  writer.writeLong(offsets[11], object.lot);
-  writer.writeDouble(offsets[12], object.netWeight);
-  writer.writeDouble(offsets[13], object.otherCharges);
-  writer.writeLong(offsets[14], object.sellerNug);
-  writer.writeDouble(offsets[15], object.sellerRate);
-  writer.writeLong(offsets[16], object.srNo);
-  writer.writeString(offsets[17], object.supplierName);
-  writer.writeString(offsets[18], object.vclNo);
-  writer.writeLongList(offsets[19], object.w);
+  writer.writeDouble(offsets[1], object.basicAmt);
+  writer.writeDouble(offsets[2], object.bikriAmt);
+  writer.writeDateTime(offsets[3], object.creationDate);
+  writer.writeString(offsets[4], object.customerName);
+  writer.writeLong(offsets[5], object.customerNug);
+  writer.writeDouble(offsets[6], object.customerRate);
+  writer.writeString(offsets[7], object.cut);
+  writer.writeString(offsets[8], object.farmerName);
+  writer.writeDouble(offsets[9], object.frightRate);
+  writer.writeDouble(offsets[10], object.grossWeight);
+  writer.writeString(offsets[11], object.itemName);
+  writer.writeDouble(offsets[12], object.labourRate);
+  writer.writeDouble(offsets[13], object.lot);
+  writer.writeDouble(offsets[14], object.netWeight);
+  writer.writeDouble(offsets[15], object.otherCharges);
+  writer.writeLong(offsets[16], object.sellerNug);
+  writer.writeDouble(offsets[17], object.sellerRate);
+  writer.writeLong(offsets[18], object.srNo);
+  writer.writeString(offsets[19], object.supplierName);
+  writer.writeString(offsets[20], object.vclNo);
+  writer.writeLongList(offsets[21], object.w);
 }
 
 SaleModel _saleModelDeserialize(
@@ -184,26 +196,28 @@ SaleModel _saleModelDeserialize(
 ) {
   final object = SaleModel();
   object.avgWeight = reader.readDouble(offsets[0]);
-  object.creationDate = reader.readDateTime(offsets[1]);
-  object.customerName = reader.readString(offsets[2]);
-  object.customerNug = reader.readLong(offsets[3]);
-  object.customerRate = reader.readDouble(offsets[4]);
-  object.cut = reader.readString(offsets[5]);
-  object.farmerName = reader.readString(offsets[6]);
-  object.frightRate = reader.readDouble(offsets[7]);
-  object.grossWeight = reader.readDouble(offsets[8]);
+  object.basicAmt = reader.readDouble(offsets[1]);
+  object.bikriAmt = reader.readDouble(offsets[2]);
+  object.creationDate = reader.readDateTime(offsets[3]);
+  object.customerName = reader.readString(offsets[4]);
+  object.customerNug = reader.readLong(offsets[5]);
+  object.customerRate = reader.readDouble(offsets[6]);
+  object.cut = reader.readString(offsets[7]);
+  object.farmerName = reader.readString(offsets[8]);
+  object.frightRate = reader.readDouble(offsets[9]);
+  object.grossWeight = reader.readDouble(offsets[10]);
   object.id = id;
-  object.itemName = reader.readString(offsets[9]);
-  object.labourRate = reader.readDouble(offsets[10]);
-  object.lot = reader.readLong(offsets[11]);
-  object.netWeight = reader.readDouble(offsets[12]);
-  object.otherCharges = reader.readDouble(offsets[13]);
-  object.sellerNug = reader.readLong(offsets[14]);
-  object.sellerRate = reader.readDouble(offsets[15]);
-  object.srNo = reader.readLong(offsets[16]);
-  object.supplierName = reader.readString(offsets[17]);
-  object.vclNo = reader.readString(offsets[18]);
-  object.w = reader.readLongList(offsets[19]) ?? [];
+  object.itemName = reader.readString(offsets[11]);
+  object.labourRate = reader.readDouble(offsets[12]);
+  object.lot = reader.readDouble(offsets[13]);
+  object.netWeight = reader.readDouble(offsets[14]);
+  object.otherCharges = reader.readDouble(offsets[15]);
+  object.sellerNug = reader.readLong(offsets[16]);
+  object.sellerRate = reader.readDouble(offsets[17]);
+  object.srNo = reader.readLong(offsets[18]);
+  object.supplierName = reader.readString(offsets[19]);
+  object.vclNo = reader.readString(offsets[20]);
+  object.w = reader.readLongList(offsets[21]) ?? [];
   return object;
 }
 
@@ -217,42 +231,46 @@ P _saleModelDeserializeProp<P>(
     case 0:
       return (reader.readDouble(offset)) as P;
     case 1:
-      return (reader.readDateTime(offset)) as P;
+      return (reader.readDouble(offset)) as P;
     case 2:
-      return (reader.readString(offset)) as P;
+      return (reader.readDouble(offset)) as P;
     case 3:
-      return (reader.readLong(offset)) as P;
+      return (reader.readDateTime(offset)) as P;
     case 4:
-      return (reader.readDouble(offset)) as P;
+      return (reader.readString(offset)) as P;
     case 5:
-      return (reader.readString(offset)) as P;
+      return (reader.readLong(offset)) as P;
     case 6:
-      return (reader.readString(offset)) as P;
+      return (reader.readDouble(offset)) as P;
     case 7:
-      return (reader.readDouble(offset)) as P;
-    case 8:
-      return (reader.readDouble(offset)) as P;
-    case 9:
       return (reader.readString(offset)) as P;
+    case 8:
+      return (reader.readString(offset)) as P;
+    case 9:
+      return (reader.readDouble(offset)) as P;
     case 10:
       return (reader.readDouble(offset)) as P;
     case 11:
-      return (reader.readLong(offset)) as P;
+      return (reader.readString(offset)) as P;
     case 12:
       return (reader.readDouble(offset)) as P;
     case 13:
       return (reader.readDouble(offset)) as P;
     case 14:
-      return (reader.readLong(offset)) as P;
+      return (reader.readDouble(offset)) as P;
     case 15:
       return (reader.readDouble(offset)) as P;
     case 16:
       return (reader.readLong(offset)) as P;
     case 17:
-      return (reader.readString(offset)) as P;
+      return (reader.readDouble(offset)) as P;
     case 18:
-      return (reader.readString(offset)) as P;
+      return (reader.readLong(offset)) as P;
     case 19:
+      return (reader.readString(offset)) as P;
+    case 20:
+      return (reader.readString(offset)) as P;
+    case 21:
       return (reader.readLongList(offset) ?? []) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -404,6 +422,130 @@ extension SaleModelQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
         property: r'avgWeight',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        epsilon: epsilon,
+      ));
+    });
+  }
+
+  QueryBuilder<SaleModel, SaleModel, QAfterFilterCondition> basicAmtEqualTo(
+    double value, {
+    double epsilon = Query.epsilon,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'basicAmt',
+        value: value,
+        epsilon: epsilon,
+      ));
+    });
+  }
+
+  QueryBuilder<SaleModel, SaleModel, QAfterFilterCondition> basicAmtGreaterThan(
+    double value, {
+    bool include = false,
+    double epsilon = Query.epsilon,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'basicAmt',
+        value: value,
+        epsilon: epsilon,
+      ));
+    });
+  }
+
+  QueryBuilder<SaleModel, SaleModel, QAfterFilterCondition> basicAmtLessThan(
+    double value, {
+    bool include = false,
+    double epsilon = Query.epsilon,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'basicAmt',
+        value: value,
+        epsilon: epsilon,
+      ));
+    });
+  }
+
+  QueryBuilder<SaleModel, SaleModel, QAfterFilterCondition> basicAmtBetween(
+    double lower,
+    double upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    double epsilon = Query.epsilon,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'basicAmt',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        epsilon: epsilon,
+      ));
+    });
+  }
+
+  QueryBuilder<SaleModel, SaleModel, QAfterFilterCondition> bikriAmtEqualTo(
+    double value, {
+    double epsilon = Query.epsilon,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'bikriAmt',
+        value: value,
+        epsilon: epsilon,
+      ));
+    });
+  }
+
+  QueryBuilder<SaleModel, SaleModel, QAfterFilterCondition> bikriAmtGreaterThan(
+    double value, {
+    bool include = false,
+    double epsilon = Query.epsilon,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'bikriAmt',
+        value: value,
+        epsilon: epsilon,
+      ));
+    });
+  }
+
+  QueryBuilder<SaleModel, SaleModel, QAfterFilterCondition> bikriAmtLessThan(
+    double value, {
+    bool include = false,
+    double epsilon = Query.epsilon,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'bikriAmt',
+        value: value,
+        epsilon: epsilon,
+      ));
+    });
+  }
+
+  QueryBuilder<SaleModel, SaleModel, QAfterFilterCondition> bikriAmtBetween(
+    double lower,
+    double upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    double epsilon = Query.epsilon,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'bikriAmt',
         lower: lower,
         includeLower: includeLower,
         upper: upper,
@@ -657,14 +799,13 @@ extension SaleModelQueryFilter
     });
   }
 
-  QueryBuilder<SaleModel, SaleModel, QAfterFilterCondition>
-      custormerRateEqualTo(
+  QueryBuilder<SaleModel, SaleModel, QAfterFilterCondition> customerRateEqualTo(
     double value, {
     double epsilon = Query.epsilon,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'custormerRate',
+        property: r'customerRate',
         value: value,
         epsilon: epsilon,
       ));
@@ -672,7 +813,7 @@ extension SaleModelQueryFilter
   }
 
   QueryBuilder<SaleModel, SaleModel, QAfterFilterCondition>
-      custormerRateGreaterThan(
+      customerRateGreaterThan(
     double value, {
     bool include = false,
     double epsilon = Query.epsilon,
@@ -680,7 +821,7 @@ extension SaleModelQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         include: include,
-        property: r'custormerRate',
+        property: r'customerRate',
         value: value,
         epsilon: epsilon,
       ));
@@ -688,7 +829,7 @@ extension SaleModelQueryFilter
   }
 
   QueryBuilder<SaleModel, SaleModel, QAfterFilterCondition>
-      custormerRateLessThan(
+      customerRateLessThan(
     double value, {
     bool include = false,
     double epsilon = Query.epsilon,
@@ -696,15 +837,14 @@ extension SaleModelQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.lessThan(
         include: include,
-        property: r'custormerRate',
+        property: r'customerRate',
         value: value,
         epsilon: epsilon,
       ));
     });
   }
 
-  QueryBuilder<SaleModel, SaleModel, QAfterFilterCondition>
-      custormerRateBetween(
+  QueryBuilder<SaleModel, SaleModel, QAfterFilterCondition> customerRateBetween(
     double lower,
     double upper, {
     bool includeLower = true,
@@ -713,7 +853,7 @@ extension SaleModelQueryFilter
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
-        property: r'custormerRate',
+        property: r'customerRate',
         lower: lower,
         includeLower: includeLower,
         upper: upper,
@@ -1361,46 +1501,54 @@ extension SaleModelQueryFilter
   }
 
   QueryBuilder<SaleModel, SaleModel, QAfterFilterCondition> lotEqualTo(
-      int value) {
+    double value, {
+    double epsilon = Query.epsilon,
+  }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'lot',
         value: value,
+        epsilon: epsilon,
       ));
     });
   }
 
   QueryBuilder<SaleModel, SaleModel, QAfterFilterCondition> lotGreaterThan(
-    int value, {
+    double value, {
     bool include = false,
+    double epsilon = Query.epsilon,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         include: include,
         property: r'lot',
         value: value,
+        epsilon: epsilon,
       ));
     });
   }
 
   QueryBuilder<SaleModel, SaleModel, QAfterFilterCondition> lotLessThan(
-    int value, {
+    double value, {
     bool include = false,
+    double epsilon = Query.epsilon,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.lessThan(
         include: include,
         property: r'lot',
         value: value,
+        epsilon: epsilon,
       ));
     });
   }
 
   QueryBuilder<SaleModel, SaleModel, QAfterFilterCondition> lotBetween(
-    int lower,
-    int upper, {
+    double lower,
+    double upper, {
     bool includeLower = true,
     bool includeUpper = true,
+    double epsilon = Query.epsilon,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
@@ -1409,6 +1557,7 @@ extension SaleModelQueryFilter
         includeLower: includeLower,
         upper: upper,
         includeUpper: includeUpper,
+        epsilon: epsilon,
       ));
     });
   }
@@ -2132,6 +2281,30 @@ extension SaleModelQuerySortBy on QueryBuilder<SaleModel, SaleModel, QSortBy> {
     });
   }
 
+  QueryBuilder<SaleModel, SaleModel, QAfterSortBy> sortByBasicAmt() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'basicAmt', Sort.asc);
+    });
+  }
+
+  QueryBuilder<SaleModel, SaleModel, QAfterSortBy> sortByBasicAmtDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'basicAmt', Sort.desc);
+    });
+  }
+
+  QueryBuilder<SaleModel, SaleModel, QAfterSortBy> sortByBikriAmt() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'bikriAmt', Sort.asc);
+    });
+  }
+
+  QueryBuilder<SaleModel, SaleModel, QAfterSortBy> sortByBikriAmtDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'bikriAmt', Sort.desc);
+    });
+  }
+
   QueryBuilder<SaleModel, SaleModel, QAfterSortBy> sortByCreationDate() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'creationDate', Sort.asc);
@@ -2168,15 +2341,15 @@ extension SaleModelQuerySortBy on QueryBuilder<SaleModel, SaleModel, QSortBy> {
     });
   }
 
-  QueryBuilder<SaleModel, SaleModel, QAfterSortBy> sortByCustormerRate() {
+  QueryBuilder<SaleModel, SaleModel, QAfterSortBy> sortByCustomerRate() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'custormerRate', Sort.asc);
+      return query.addSortBy(r'customerRate', Sort.asc);
     });
   }
 
-  QueryBuilder<SaleModel, SaleModel, QAfterSortBy> sortByCustormerRateDesc() {
+  QueryBuilder<SaleModel, SaleModel, QAfterSortBy> sortByCustomerRateDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'custormerRate', Sort.desc);
+      return query.addSortBy(r'customerRate', Sort.desc);
     });
   }
 
@@ -2363,6 +2536,30 @@ extension SaleModelQuerySortThenBy
     });
   }
 
+  QueryBuilder<SaleModel, SaleModel, QAfterSortBy> thenByBasicAmt() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'basicAmt', Sort.asc);
+    });
+  }
+
+  QueryBuilder<SaleModel, SaleModel, QAfterSortBy> thenByBasicAmtDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'basicAmt', Sort.desc);
+    });
+  }
+
+  QueryBuilder<SaleModel, SaleModel, QAfterSortBy> thenByBikriAmt() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'bikriAmt', Sort.asc);
+    });
+  }
+
+  QueryBuilder<SaleModel, SaleModel, QAfterSortBy> thenByBikriAmtDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'bikriAmt', Sort.desc);
+    });
+  }
+
   QueryBuilder<SaleModel, SaleModel, QAfterSortBy> thenByCreationDate() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'creationDate', Sort.asc);
@@ -2399,15 +2596,15 @@ extension SaleModelQuerySortThenBy
     });
   }
 
-  QueryBuilder<SaleModel, SaleModel, QAfterSortBy> thenByCustormerRate() {
+  QueryBuilder<SaleModel, SaleModel, QAfterSortBy> thenByCustomerRate() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'custormerRate', Sort.asc);
+      return query.addSortBy(r'customerRate', Sort.asc);
     });
   }
 
-  QueryBuilder<SaleModel, SaleModel, QAfterSortBy> thenByCustormerRateDesc() {
+  QueryBuilder<SaleModel, SaleModel, QAfterSortBy> thenByCustomerRateDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'custormerRate', Sort.desc);
+      return query.addSortBy(r'customerRate', Sort.desc);
     });
   }
 
@@ -2600,6 +2797,18 @@ extension SaleModelQueryWhereDistinct
     });
   }
 
+  QueryBuilder<SaleModel, SaleModel, QDistinct> distinctByBasicAmt() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'basicAmt');
+    });
+  }
+
+  QueryBuilder<SaleModel, SaleModel, QDistinct> distinctByBikriAmt() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'bikriAmt');
+    });
+  }
+
   QueryBuilder<SaleModel, SaleModel, QDistinct> distinctByCreationDate() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'creationDate');
@@ -2619,9 +2828,9 @@ extension SaleModelQueryWhereDistinct
     });
   }
 
-  QueryBuilder<SaleModel, SaleModel, QDistinct> distinctByCustormerRate() {
+  QueryBuilder<SaleModel, SaleModel, QDistinct> distinctByCustomerRate() {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'custormerRate');
+      return query.addDistinctBy(r'customerRate');
     });
   }
 
@@ -2735,6 +2944,18 @@ extension SaleModelQueryProperty
     });
   }
 
+  QueryBuilder<SaleModel, double, QQueryOperations> basicAmtProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'basicAmt');
+    });
+  }
+
+  QueryBuilder<SaleModel, double, QQueryOperations> bikriAmtProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'bikriAmt');
+    });
+  }
+
   QueryBuilder<SaleModel, DateTime, QQueryOperations> creationDateProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'creationDate');
@@ -2753,9 +2974,9 @@ extension SaleModelQueryProperty
     });
   }
 
-  QueryBuilder<SaleModel, double, QQueryOperations> custormerRateProperty() {
+  QueryBuilder<SaleModel, double, QQueryOperations> customerRateProperty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'custormerRate');
+      return query.addPropertyName(r'customerRate');
     });
   }
 
@@ -2795,7 +3016,7 @@ extension SaleModelQueryProperty
     });
   }
 
-  QueryBuilder<SaleModel, int, QQueryOperations> lotProperty() {
+  QueryBuilder<SaleModel, double, QQueryOperations> lotProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'lot');
     });

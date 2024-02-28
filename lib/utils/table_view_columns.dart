@@ -36,7 +36,9 @@ final tableViewColumns = <PlutoColumn>[
   PlutoColumn(
     title: 'Creation Date',
     field: 'creationDate',
-    type: PlutoColumnType.date(),
+    type: PlutoColumnType.date(
+        // format: 'dd-MM-yyyy',
+        ),
     minWidth: PlutoGridDatePicker.dateCellWidth,
   ),
   PlutoColumn(

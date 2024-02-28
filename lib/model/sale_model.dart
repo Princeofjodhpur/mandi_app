@@ -7,6 +7,8 @@ part 'sale_model.g.dart';
 class SaleModel {
   // Identifiers
   Id id = Isar.autoIncrement; // Annotated with late and required for Isar
+  //Checkbox
+  final bool? isSelected;
 
   late int srNo;
   late String itemName;
@@ -23,8 +25,7 @@ class SaleModel {
   late double grossWeight;
   late double netWeight;
   late double avgWeight;
-  late List<int>
-      w; // w will be used to store all the values of w1, w2, w3,....,wn
+  late List<int> w; // w will be used to store all the values of w1, w2, w3,....,wn
 
   // Rate details
   late double frightRate;
@@ -35,18 +36,20 @@ class SaleModel {
 
   // Customer details
   late String customerName;
-  late int
-      customerNug; // cNug(sellerNug) will be copied from nug when the data is saved but can be changed by the user
+  late int customerNug; // cNug(sellerNug) will be copied from nug when the data is saved but can be changed by the user
 
   // Other details
-  late int lot;
-  late int
-      sellerNug; // sNug(sellerNug) will be copied from nug when the data is saved but can be changed by the user
+  late double lot;
+  late int sellerNug; // sNug(sellerNug) will be copied from nug when the data is saved but can be changed by the user
   late String cut; // cut is the unit of nug E.g. Peti, Daba, Box, etc.
 
+  //Calculation Fields
+  late double basicAmt;
+  late double bikriAmt;
+
   // Constructor with initializer list
-  SaleModel()
-      : avgWeight = 0,
+  SaleModel() : avgWeight = 0,
+        isSelected = false,
         customerName = '',
         customerNug = 0,
         customerRate = 0,
@@ -62,15 +65,17 @@ class SaleModel {
         otherCharges = 0,
         sellerNug = 0,
         sellerRate = 0,
+        bikriAmt = 0,
+        basicAmt = 0,
         srNo = 0,
         supplierName = '',
         vclNo = '',
-        w = List<int>.filled(20, 0);
+        w = List<int>.filled(24, 0);
 
-  SaleModel.create({
+  SaleModel.create(this.isSelected, {
     required this.srNo,
     required this.itemName,
-    this.supplierName='supplierName',
+    this.supplierName = 'supplierName',
     // Add other required fields here
   }) {
     id = 0; // You can set this to 0 or null, Isar will auto-generate it.
@@ -191,7 +196,7 @@ class SaleModel {
         customerNug = value as int;
         break;
       case 'lot':
-        lot = value as int;
+        lot = value as double;
         break;
       case 'sellerNug':
         sellerNug = value as int;
