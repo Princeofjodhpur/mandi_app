@@ -1,5 +1,7 @@
 import 'package:isar/isar.dart';
+/*
 import 'package:pluto_grid/pluto_grid.dart';
+*/
 
 part 'sale_model.g.dart';
 
@@ -82,7 +84,7 @@ class SaleModel {
   }
 
   // Convert a PlutoRow to a SaleModel
-  void fromPlutoRow(PlutoRow row) {
+  /*void fromPlutoRow(PlutoRow row) {
     id = row.cells['id']?.value;
     srNo = row.cells['srNo']?.value;
     itemName = row.cells['itemName']?.value;
@@ -111,10 +113,10 @@ class SaleModel {
     lot = row.cells['lot']?.value;
     sellerNug = row.cells['sellerNug']?.value;
     cut = row.cells['cut']?.value;
-  }
+  }*/
 
   // Convert a SaleModel to a PlutoRow
-  PlutoRow toPlutoRow() {
+  /*PlutoRow toPlutoRow() {
     return PlutoRow(
       cells: {
         'id': PlutoCell(value: id),
@@ -140,7 +142,7 @@ class SaleModel {
         'cut': PlutoCell(value: cut),
       },
     );
-  }
+  }*/
 
   void updateField(String key, dynamic value) {
     switch (key) {

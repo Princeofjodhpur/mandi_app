@@ -1,6 +1,6 @@
-import 'package:pluto_grid/pluto_grid.dart';
+/*import 'package:pluto_grid/pluto_grid.dart';*/
 
-final tableViewColumns = <PlutoColumn>[
+/*final tableViewColumns = <PlutoColumn>[
   PlutoColumn(
     title: 'Id',
     field: 'id',
@@ -114,4 +114,4 @@ final tableViewColumns = <PlutoColumn>[
   //           field: 'w${index + 1}',
   //           type: PlutoColumnType.number(),
   //         )),
-];
+];*/

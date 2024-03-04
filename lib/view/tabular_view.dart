@@ -3,7 +3,6 @@ import 'package:intl/intl.dart';
 import 'package:isar/isar.dart';
 import 'package:mandi_app/model/sale_model.dart';
 import 'package:mandi_app/utils/isar_provider.dart';
-import 'package:pluto_grid/pluto_grid.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 final GlobalKey<SfDataGridState> _dataGridKey = GlobalKey<SfDataGridState>();
@@ -167,7 +166,6 @@ class _TabularViewState extends State<TabularView> {
           } else if (snapshot.hasError) {
             return Text('Error: ${snapshot.error}');
           } else {
-
             stateSetter(fn) {
               setState(fn);
             }
@@ -187,7 +185,7 @@ class _TabularViewState extends State<TabularView> {
                }
             });
             sale = _MyDataSource(saleModel, _dataGridController, stateSetter);
-            return SfDataGrid(
+            return sale.updatedData.isEmpty ?Center(child: Text("No record found"),) : SfDataGrid(
               source: sale,
               key: _dataGridKey,
               allowColumnsResizing: true,
@@ -624,6 +622,18 @@ class _MyDataSource extends DataGridSource {
         cells: row.getCells().map<Widget>((e) {
       int index = effectiveRows.indexOf(row);
       Color color = index.isOdd ? Colors.grey[100]! : Colors.white;
+      var lotValue;
+      if(e.columnName == "lot"){
+        if(e.value == 0.25){
+          lotValue = "Plate";
+        }else if(e.value == 1.25){
+          lotValue = "Box";
+        }else if(e.value == 0.5){
+          lotValue = "Daba";
+        }else if(e.value == 3){
+          lotValue = "Peti";
+        }
+      }
 
       return e.columnName == 'CheckBox'
           ? Container(
@@ -662,11 +672,11 @@ class _MyDataSource extends DataGridSource {
                 },
               ),
             )
-          : e.columnName == 'creationDate'
+          : e.columnName == 'lot'
               ? Container(
                   color: color,
                   alignment: Alignment.center,
-                  child: Text(e.value.toString().substring(0, 10)),
+                  child: Text(lotValue.toString()),
                 )
               : Container(
                   color: color,
@@ -806,6 +816,7 @@ class _MyDataSource extends DataGridSource {
     // To avoid committing the [DataGridCell] value that was previously edited
     // into the current non-modified [DataGridCell].
     newCellValue = null;
+    var lotValue;
     List<String> listItem = [];
 
     final bool isNumericType = column.columnName == 'id' ||
@@ -849,8 +860,21 @@ class _MyDataSource extends DataGridSource {
             listMap[task.itemName] = [];
           }
           listMap[task.itemName]!.add(task);
+        }else if (column.columnName == 'lot') {
+         listItem = ["Peti","Daba","Box","Plate"];
+
+         if(displayText == "0.25"){
+           lotValue = "Plate";
+         }else if(displayText == "1.25"){
+           lotValue = "Box";
+         }else if(displayText == "0.5"){
+           lotValue = "Daba";
+         }else if(displayText == "3"){
+           lotValue = "Peti";
+         }
         }
       });
+
       listMap.forEach((key, value) {
         if (key != "") listItem.add('$key');
       });
@@ -862,7 +886,94 @@ class _MyDataSource extends DataGridSource {
     return Container(
       padding: const EdgeInsets.all(8.0),
       alignment: isNumericType ? Alignment.centerRight : Alignment.centerLeft,
-      child: column.columnName != 'supplierName' &&
+      child: column.columnName == 'lot'? RawAutocomplete<String>(
+        textEditingController: editingController..text = lotValue,
+        focusNode: FocusNode(),
+        optionsBuilder: (TextEditingValue textEditingValue) {
+          if (textEditingValue.text == '') {
+            return listItem;
+          } else {
+            List<String> matches = <String>[];
+            matches.addAll(listItem);
+            matches.retainWhere((s) {
+              return s
+                  .toLowerCase()
+                  .contains(textEditingValue.text.toLowerCase());
+            });
+            return matches;
+          }
+        },
+        onSelected: (String selection) {
+          if(selection == "Plate"){
+            newCellValue = 0.25;
+          }else if(selection == "Box"){
+            newCellValue = 1.25;
+          }else if(selection == "Daba"){
+            newCellValue = 0.5;
+          }else if(selection == "Peti"){
+            newCellValue = 3;
+          }
+          _setState(() {});
+          submitCell();
+        },
+        fieldViewBuilder: (
+            BuildContext context,
+            TextEditingController textEditingController,
+            FocusNode focusNode,
+            VoidCallback onFieldSubmitted,
+            ) {
+          return TextFormField(
+            keyboardType: TextInputType.text,
+            controller: textEditingController,
+            focusNode: focusNode,
+            onFieldSubmitted: (String value) {
+              onFieldSubmitted();
+            },
+            onChanged: (selection) {
+              if(selection == "Plate"){
+                newCellValue = 0.25;
+              }else if(selection == "Box"){
+                newCellValue = 1.25;
+              }else if(selection == "Daba"){
+                newCellValue = 0.5;
+              }else if(selection == "Peti"){
+                newCellValue = 3;
+              }
+            },
+          );
+        },
+        optionsViewBuilder: (
+            BuildContext context,
+            AutocompleteOnSelected<String> onSelected,
+            Iterable<String> options,
+            ) {
+          return Align(
+            alignment: Alignment.topLeft,
+            child: Material(
+              elevation: 4.0,
+              child: SizedBox(
+                height: 200.0,
+                child: ListView.builder(
+                  padding: const EdgeInsets.all(8.0),
+                  itemCount: options.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    final String option = options.elementAt(index);
+                    return GestureDetector(
+                      onTap: () {
+                        onSelected(option);
+                        _setState(() {});
+                      },
+                      child: ListTile(
+                        title: Text(option),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ),
+          );
+        },
+      ): column.columnName != 'supplierName' &&
               column.columnName != 'farmerName' &&
               column.columnName != 'itemName' &&
               column.columnName != 'customerName'
@@ -893,8 +1004,8 @@ class _MyDataSource extends DataGridSource {
                 // Calls when cell Submitted
                 submitCell();
               },
-            )
-          : RawAutocomplete<String>(
+            ) :
+          RawAutocomplete<String>(
               textEditingController: editingController..text = displayText,
               focusNode: FocusNode(),
               optionsBuilder: (TextEditingValue textEditingValue) {
