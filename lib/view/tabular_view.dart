@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names, prefer_typing_uninitialized_variables
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:isar/isar.dart';
@@ -28,7 +30,7 @@ class _TabularViewState extends State<TabularView> {
 
   @override
   void initState() {
-    // TODO: implement initState
+    
     super.initState();
     getData();
     stateSetter(fn) {
@@ -48,7 +50,7 @@ class _TabularViewState extends State<TabularView> {
       setState(fn);
     }
 
-    loadedData.forEach((element) {
+    for (var element in loadedData) {
       if (selectedDate != "") {
         if (element.creationDate.toString().substring(0, 10) == selectedDate) {
           saleModel.add(element);
@@ -60,7 +62,7 @@ class _TabularViewState extends State<TabularView> {
       } else {
         saleModel.add(element);
       }
-    });
+    }
     sale = _MyDataSource(saleModel, _dataGridController, stateSetter);
   }
 
@@ -148,7 +150,6 @@ class _TabularViewState extends State<TabularView> {
                               selectedDate = "";
                               selected_vcl_no = "";
                             }
-                            ;
                             vclArray.clear();
                             stateSetter(fn) {
                               setState(fn);
@@ -185,7 +186,7 @@ class _TabularViewState extends State<TabularView> {
               setState(fn);
             }
 
-            snapshot.data!.forEach((element) {
+            for (var element in snapshot.data!) {
               if (selected_vcl_no != "" && selectedDate != "") {
                 if (element.vclNo.toString() == selected_vcl_no &&
                     element.creationDate.toString().substring(0, 10) ==
@@ -202,10 +203,10 @@ class _TabularViewState extends State<TabularView> {
               } else {
                 saleModel.add(element);
               }
-            });
+            }
             sale = _MyDataSource(saleModel, _dataGridController, stateSetter);
             return sale.updatedData.isEmpty
-                ? Center(
+                ? const Center(
                     child: Text("No record found"),
                   )
                 : SfDataGrid(
@@ -567,12 +568,12 @@ class _TabularViewState extends State<TabularView> {
     var record = await isar.saleModels.where().findAll();
     Map<String, List<SaleModel>> groupedTasks = {};
 
-    record.forEach((task) {
+    for (var task in record) {
       if (!groupedTasks.containsKey(task.vclNo)) {
         groupedTasks[task.vclNo] = [];
       }
       groupedTasks[task.vclNo]!.add(task);
-    });
+    }
 
     return groupedTasks;
   }
@@ -592,7 +593,7 @@ class _MyDataSource extends DataGridSource {
     // Helps to show data grid
     saleData = updatedData.map<DataGridRow>((e) {
       String w = "";
-      e.w.forEach((element) {
+      for (var element in e.w) {
         if (element != 0) {
           if (w == "") {
             w = element.toString();
@@ -600,7 +601,7 @@ class _MyDataSource extends DataGridSource {
             w = "$w+$element";
           }
         }
-      });
+      }
       return DataGridRow(cells: [
         DataGridCell<bool>(columnName: 'CheckBox', value: e.isSelected),
         DataGridCell<int>(columnName: 'id', value: e.id),
@@ -879,7 +880,7 @@ class _MyDataSource extends DataGridSource {
     Map<String, List<SaleModel>> listMap = {};
 
     if (updatedData.isNotEmpty) {
-      updatedData.forEach((task) {
+      for (var task in updatedData) {
         if (column.columnName == 'supplierName') {
           if (!listMap.containsKey(task.supplierName)) {
             listMap[task.supplierName] = [];
@@ -913,10 +914,10 @@ class _MyDataSource extends DataGridSource {
             lotValue = "Peti";
           }
         }
-      });
+      }
 
       listMap.forEach((key, value) {
-        if (key != "") listItem.add('$key');
+        if (key != "") listItem.add(key);
       });
     }
     if (column.columnName == 'lot') {
@@ -1102,11 +1103,11 @@ class _MyDataSource extends DataGridSource {
     bool isCal = false;
     double grossWeight = 0; // GrossWeight = w1+w2+w3.....+wN
     double cut = 0;
-    saleModel.w.forEach((element) {
+    for (var element in saleModel.w) {
       if (element != 0) {
         isCal = true;
       }
-    });
+    }
 
     if (isCal) {
       //GrossWeight Calculation

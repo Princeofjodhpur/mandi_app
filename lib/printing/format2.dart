@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_typing_uninitialized_variables, non_constant_identifier_names, use_build_context_synchronously
+
 import 'dart:io';
 
 import 'package:flutter/services.dart';
@@ -37,14 +39,14 @@ class _PrintFormatTwoState extends State<PrintFormatTwo> {
     Map<Tuple2<String, String>, List<SaleModel>> groupedTasks = {};
 
 
-    record.forEach((task) {
+    for (var task in record) {
       var key = Tuple2(task.itemName, task.vclNo);
       if (!groupedTasks.containsKey(key)) {
         groupedTasks[key] = [];
       }
 
       groupedTasks[key]!.add(task);
-    });
+    }
 
     return groupedTasks;
   }
@@ -54,20 +56,20 @@ class _PrintFormatTwoState extends State<PrintFormatTwo> {
     var record = await isar.saleModels.where().findAll();
     Map<String, List<SaleModel>> groupedTasks = {};
 
-    record.forEach((task) {
+    for (var task in record) {
 
       if (!groupedTasks.containsKey(task.vclNo)) {
         groupedTasks[task.vclNo] = [];
       }
       groupedTasks[task.vclNo]!.add(task);
-    });
+    }
 
     return groupedTasks;
   }
 
   @override
   void initState() {
-    // TODO: implement initState
+    
     super.initState();
     selectedDate = DateTime.now().toString().substring(0,10);
   }
@@ -131,7 +133,7 @@ class _PrintFormatTwoState extends State<PrintFormatTwo> {
                           onPressed: (){
                             Navigator.pop(context);
                             selected_vcl_no = vclArray[index];
-                            if(vclArray[index] == "All"){ selectedDate = ""; selected_vcl_no = "";};
+                            if(vclArray[index] == "All"){ selectedDate = ""; selected_vcl_no = "";}
                             vclArray.clear();
                             setState(() {
 

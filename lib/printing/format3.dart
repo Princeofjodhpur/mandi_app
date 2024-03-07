@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names, unnecessary_cast, prefer_typing_uninitialized_variables, duplicate_ignore, avoid_print, use_build_context_synchronously, empty_statements
+
 import 'dart:io';
 
 import 'package:dotted_line/dotted_line.dart';
@@ -30,7 +32,7 @@ class _PrintFormatThreeState extends State<PrintFormatThree> {
 
   @override
   void initState() {
-    // TODO: implement initState
+    
     super.initState();
     selectedDate = DateTime.now().toString().substring(0,10);
   }
@@ -133,14 +135,14 @@ class _PrintFormatThreeState extends State<PrintFormatThree> {
 
                 int totalNug = 0,total_avg_weigth = 0,total_bikri_amt = 0,total_other_charges = 0,total_freight_charges = 0,total_labour = 0 , total_amt = 0;
 
-                sale.forEach((element) {
+                for (var element in sale) {
                   totalNug = totalNug + element.sellerNug as int;
                   total_avg_weigth = total_avg_weigth + element.avgWeight.toInt() as int;
                   total_bikri_amt = total_bikri_amt + element.bikriAmt.toInt() as int;
-                  total_other_charges = total_other_charges + ((element.basicAmt.toInt()*element.otherCharges.toInt())/100).toInt() as int;
+                  total_other_charges = total_other_charges + (element.basicAmt.toInt()*element.otherCharges.toInt())~/100 as int;
                   if(element.lot.toString() == "0.25" || element.lot.toString() == "0.5"){
-                    total_freight_charges = total_freight_charges + ((element.frightRate.toInt() * element.sellerNug)/2).toInt() as int;
-                    total_labour = total_labour + ((element.labourRate.toInt() * element.sellerNug)/2).toInt() as int;
+                    total_freight_charges = total_freight_charges + (element.frightRate.toInt() * element.sellerNug)~/2 as int;
+                    total_labour = total_labour + (element.labourRate.toInt() * element.sellerNug)~/2 as int;
                   }else{
                     print(total_freight_charges.toString());
                     total_freight_charges = total_freight_charges + (element.frightRate.toInt() * element.sellerNug) as int;
@@ -173,13 +175,13 @@ class _PrintFormatThreeState extends State<PrintFormatThree> {
                     sr_no = element.srNo;
                     date = element.creationDate.toString().substring(0,10);
                   }
-                });
+                }
 
                 int total_charges = total_labour+total_freight_charges+total_other_charges;
 
                 total_amt = total_bikri_amt-total_charges;
-                DateTime tempDate = new DateFormat("yyyy-MM-dd").parse( selectedDate != "" ? selectedDate: date);
-                String showDate = tempDate.day.toString()+"/"+tempDate.month.toString()+"/"+tempDate.year.toString();
+                DateTime tempDate = DateFormat("yyyy-MM-dd").parse( selectedDate != "" ? selectedDate: date);
+                String showDate = "${tempDate.day}/${tempDate.month}/${tempDate.year}";
 
                 return show_item.isEmpty ? Container() : Container(
                   margin: const EdgeInsets.all(20),
@@ -205,10 +207,10 @@ class _PrintFormatThreeState extends State<PrintFormatThree> {
                                 children: [
                                   Text(supplier,
                                     style: const TextStyle(fontWeight: FontWeight.bold),),
-                                  DottedLine(lineLength: double.infinity,),
-                                  Text("",
-                                    style: const TextStyle(fontWeight: FontWeight.bold),),
-                                  DottedLine(lineLength: double.infinity,)
+                                  const DottedLine(lineLength: double.infinity,),
+                                  const Text("",
+                                    style: TextStyle(fontWeight: FontWeight.bold),),
+                                  const DottedLine(lineLength: double.infinity,)
                                 ],
                               ),
                             ),
@@ -230,7 +232,7 @@ class _PrintFormatThreeState extends State<PrintFormatThree> {
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.end,
                                     children: [
-                                      Text("$showDate", style: const TextStyle(
+                                      Text(showDate, style: const TextStyle(
                                           fontWeight: FontWeight.bold),),
                                       Text("                  $sr_no", style: const TextStyle(
                                           fontWeight: FontWeight.bold),),
@@ -284,8 +286,8 @@ class _PrintFormatThreeState extends State<PrintFormatThree> {
                         itemCount: show_item.length,
                         shrinkWrap: true,
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 5.0,bottom: 5),
+                      const Padding(
+                        padding: EdgeInsets.only(top: 5.0,bottom: 5),
                         child: DottedLine(),
                       ),
                       Row(
@@ -420,7 +422,7 @@ class _PrintFormatThreeState extends State<PrintFormatThree> {
                                       bottom: BorderSide(color: Colors.grey),
                                       left: BorderSide(color: Colors.grey))
                               ),*/
-                              child: Text("("+total_charges.toString()+")",
+                              child: Text("($total_charges)",
                                 style: const TextStyle(fontWeight: FontWeight.bold),),
                             ),
                           ),
@@ -487,9 +489,9 @@ class _PrintFormatThreeState extends State<PrintFormatThree> {
                               ),*/
                               child: Column(
                                 children: [
-                                  Divider(height: 5,color: Colors.black,),
+                                  const Divider(height: 5,color: Colors.black,),
                                   Text(total_amt.toString(), style: const TextStyle(fontWeight: FontWeight.bold),),
-                                  Divider(height: 5,color: Colors.black,),
+                                  const Divider(height: 5,color: Colors.black,),
                                 ],
                               ),
                             ),
@@ -545,6 +547,7 @@ class _PrintFormatThreeState extends State<PrintFormatThree> {
           isExtended: true,
           onPressed: () async {
             final pdf = await generatePdfFromListView();
+            // ignore: use_build_context_synchronously
             Navigator.push(context, MaterialPageRoute(builder: (context)=> PdfViewer(pdfPath: pdf)));
           },
           child: const Icon(Icons.print),
@@ -559,7 +562,7 @@ class _PrintFormatThreeState extends State<PrintFormatThree> {
     var record = await isar.saleModels.where().findAll();
     Map<String, List<SaleModel>> groupedTasks = {};
 
-    record.forEach((task) {
+    for (var task in record) {
       if (!groupedTasks.containsKey(task.supplierName)) {
         groupedTasks[task.supplierName] = [];
       }
@@ -570,7 +573,7 @@ class _PrintFormatThreeState extends State<PrintFormatThree> {
           groupedTasks[task.supplierName]!.add(task);
         }
       }
-    });
+    }
 
 
     return groupedTasks;
@@ -582,13 +585,13 @@ class _PrintFormatThreeState extends State<PrintFormatThree> {
     var record = await isar.saleModels.where().findAll();
     Map<DateTime, List<SaleModel>> groupedTasks = {};
 
-    record.forEach((task) {
+    for (var task in record) {
 
       if (!groupedTasks.containsKey(task.creationDate)) {
         groupedTasks[task.creationDate] = [];
       }
       groupedTasks[task.creationDate]!.add(task);
-    });
+    }
 
     return groupedTasks;
   }
@@ -599,13 +602,13 @@ class _PrintFormatThreeState extends State<PrintFormatThree> {
     var record = await isar.saleModels.where().findAll();
     Map<String, List<SaleModel>> groupedTasks = {};
 
-    record.forEach((task) {
+    for (var task in record) {
 
       if (!groupedTasks.containsKey(task.vclNo)) {
         groupedTasks[task.vclNo] = [];
       }
       groupedTasks[task.vclNo]!.add(task);
-    });
+    }
 
     return groupedTasks;
   }
@@ -632,7 +635,7 @@ class _PrintFormatThreeState extends State<PrintFormatThree> {
             border: pw.Border(bottom: pw.BorderSide(color: PdfColors.black),
                 right: pw.BorderSide(color: PdfColors.black))
         ),*/
-        padding:  pw.EdgeInsets.only(bottom: 5, top: 5),
+        padding:  const pw.EdgeInsets.only(bottom: 5, top: 5),
         child: pw.Text(heading, style: pw.TextStyle(fontWeight: pw.FontWeight.bold),),
       ),
     );
@@ -672,7 +675,7 @@ class _PrintFormatThreeState extends State<PrintFormatThree> {
     final  ttf = pw.Font.ttf(font);
       pdf.addPage(
           pw.MultiPage(
-            margin: pw.EdgeInsets.all(5),
+            margin: const pw.EdgeInsets.all(5),
           build: (pw.Context context) {
             return [
               pw.Container(
@@ -685,6 +688,7 @@ class _PrintFormatThreeState extends State<PrintFormatThree> {
               pw.ListView.builder(itemBuilder: (context, index) {
               final supplier = data.keys.elementAt(index);
               final sale = data[supplier]!;
+              // ignore: prefer_typing_uninitialized_variables
               var vcl_no,sr_no,date;
               List show_item = [];
               int totalNug = 0,total_avg_weigth = 0,total_bikri_amt = 0,total_other_charges = 0,total_freight_charges = 0,total_labour = 0 , total_amt = 0;
@@ -732,8 +736,8 @@ class _PrintFormatThreeState extends State<PrintFormatThree> {
               int total_charges = total_labour+total_freight_charges+total_other_charges;
 
               total_amt = total_bikri_amt-total_charges;
-              DateTime tempDate = new DateFormat("yyyy-MM-dd").parse( selectedDate != "" ? selectedDate: date);
-              String showDate = tempDate.day.toString()+"/"+tempDate.month.toString()+"/"+tempDate.year.toString();
+              DateTime tempDate = DateFormat("yyyy-MM-dd").parse( selectedDate != "" ? selectedDate: date);
+              String showDate = "${tempDate.day}/${tempDate.month}/${tempDate.year}";
               return show_item.isEmpty ? pw.Container() : pw.Container(
                 margin: const pw.EdgeInsets.all(20),
                 decoration: pw.BoxDecoration(
@@ -748,7 +752,7 @@ class _PrintFormatThreeState extends State<PrintFormatThree> {
                           child: pw.Container(
                             height: 60,
                             padding: const pw.EdgeInsets.only(left: 10, top: 5),
-                            decoration: pw.BoxDecoration(
+                            decoration: const pw.BoxDecoration(
                                 border: pw.Border(
                                     bottom: pw.BorderSide(color: PdfColors.black),
                                     right: pw.BorderSide(color: PdfColors.black))
@@ -761,11 +765,11 @@ class _PrintFormatThreeState extends State<PrintFormatThree> {
                                 pw.Flex(
                                     children: List.generate(44, (_) {
                                       return pw.Container(
-                                        margin: pw.EdgeInsets.symmetric(horizontal: 2),
+                                        margin: const pw.EdgeInsets.symmetric(horizontal: 2),
                                         width: 2,
                                         height: 1,
                                         child: pw.DecoratedBox(
-                                          decoration: pw.BoxDecoration(color: PdfColors.black),
+                                          decoration: const pw.BoxDecoration(color: PdfColors.black),
                                         ),
                                       );
                                     }), direction: pw.Axis.horizontal),
@@ -773,11 +777,11 @@ class _PrintFormatThreeState extends State<PrintFormatThree> {
                                 pw.Flex(
                                     children: List.generate(44, (_) {
                                       return pw.Container(
-                                        margin: pw.EdgeInsets.symmetric(horizontal: 2),
+                                        margin: const pw.EdgeInsets.symmetric(horizontal: 2),
                                         width: 2,
                                         height: 1,
                                         child: pw.DecoratedBox(
-                                          decoration: pw.BoxDecoration(color: PdfColors.black),
+                                          decoration: const pw.BoxDecoration(color: PdfColors.black),
                                         ),
                                       );
                                     }), direction: pw.Axis.horizontal),
@@ -802,7 +806,7 @@ class _PrintFormatThreeState extends State<PrintFormatThree> {
                                 pw.Row(
                                   mainAxisAlignment: pw.MainAxisAlignment.end,
                                   children: [
-                                    pw.Text("$showDate", style:  pw.TextStyle(
+                                    pw.Text(showDate, style:  pw.TextStyle(
                                         fontWeight: pw.FontWeight.bold),),
                                     pw.Text("                  $sr_no", style: pw.TextStyle(
                                         fontWeight: pw.FontWeight.bold),),
@@ -847,11 +851,11 @@ class _PrintFormatThreeState extends State<PrintFormatThree> {
                     pw.Flex(
                         children: List.generate(91, (_) {
                           return pw.Container(
-                            margin: pw.EdgeInsets.symmetric(horizontal: 2),
+                            margin: const pw.EdgeInsets.symmetric(horizontal: 2),
                             width: 2,
                             height: 1,
                             child: pw.DecoratedBox(
-                              decoration: pw.BoxDecoration(color: PdfColors.black),
+                              decoration: const pw.BoxDecoration(color: PdfColors.black),
                             ),
                           );
                         }), direction: pw.Axis.horizontal),
@@ -990,7 +994,7 @@ class _PrintFormatThreeState extends State<PrintFormatThree> {
                                     bottom: pw.BorderSide(color: PdfColors.grey),
                                     left: pw.BorderSide(color: PdfColors.grey))
                             ),*/
-                            child: pw.Text("("+total_charges.toString()+") ",
+                            child: pw.Text("($total_charges) ",
                               style: pw.TextStyle(fontWeight: pw.FontWeight.bold),),
                           ),
                         ),

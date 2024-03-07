@@ -58,7 +58,7 @@ class _MainViewState extends State<MainView> {
                 switch (index) {
                   case 1:
                     _selectedIndex = index;
-                    _currentView = SaleFormView();
+                    _currentView = const SaleFormView();
                     break;
                   case 2:
                     _selectedIndex = index;
@@ -66,7 +66,7 @@ class _MainViewState extends State<MainView> {
                     break;
                   case 3:
                     _selectedIndex = index;
-                    _currentView = PrintView(); // Assume you have a PrintView widget
+                    _currentView = const PrintView(); // Assume you have a PrintView widget
                     break;
                 }
               });

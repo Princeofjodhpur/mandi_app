@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_typing_uninitialized_variables
+
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -59,11 +61,11 @@ class _SaleFormViewState extends State<SaleFormView> {
     bool isCal = false;
     double grossWeight = 0; // GrossWeight = w1+w2+w3.....+wN
     double cut = 0;
-    saleModel.w.forEach((element) {
+    for (var element in saleModel.w) {
       if (element != 0) {
         isCal = true;
       }
-    });
+    }
     cut = saleModel.lot;
     saleModel.cut = cut.toString();
 
@@ -128,7 +130,6 @@ class _SaleFormViewState extends State<SaleFormView> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     readfromDatabase();
   }
@@ -203,7 +204,7 @@ class _SaleFormViewState extends State<SaleFormView> {
                               decoration: InputDecoration(
                                 filled: focusNodes[0].hasFocus ? true : false,
                                 fillColor: focusNodes[0].hasFocus
-                                    ? Color(0xffF0FFFF)
+                                    ? const Color(0xffF0FFFF)
                                     : Colors.transparent,
                                 labelText: 'Serial Number',
                                 border: const OutlineInputBorder(
@@ -274,7 +275,7 @@ class _SaleFormViewState extends State<SaleFormView> {
                                     filled:
                                         focusNodes[1].hasFocus ? true : false,
                                     fillColor: focusNodes[1].hasFocus
-                                        ? Color(0xffF0FFFF)
+                                        ? const Color(0xffF0FFFF)
                                         : Colors.transparent,
                                     labelText: 'Supplier Name',
                                     border: const OutlineInputBorder(
@@ -352,7 +353,7 @@ class _SaleFormViewState extends State<SaleFormView> {
                                     filled:
                                         focusNodes[2].hasFocus ? true : false,
                                     fillColor: focusNodes[2].hasFocus
-                                        ? Color(0xffF0FFFF)
+                                        ? const Color(0xffF0FFFF)
                                         : Colors.transparent,
                                     labelText: 'Farmer Name',
                                     border: const OutlineInputBorder(
@@ -459,7 +460,7 @@ class _SaleFormViewState extends State<SaleFormView> {
                                     filled:
                                         focusNodes[5].hasFocus ? true : false,
                                     fillColor: focusNodes[5].hasFocus
-                                        ? Color(0xffF0FFFF)
+                                        ? const Color(0xffF0FFFF)
                                         : Colors.transparent,
                                     labelText: 'Customer Name',
                                     border: const OutlineInputBorder(
@@ -550,7 +551,7 @@ class _SaleFormViewState extends State<SaleFormView> {
                                       filled:
                                           focusNodes[6].hasFocus ? true : false,
                                       fillColor: focusNodes[6].hasFocus
-                                          ? Color(0xffF0FFFF)
+                                          ? const Color(0xffF0FFFF)
                                           : Colors.transparent,
                                       labelText: 'Item Name',
                                       border: const OutlineInputBorder(
@@ -620,7 +621,7 @@ class _SaleFormViewState extends State<SaleFormView> {
                                 decoration: InputDecoration(
                                   filled: focusNodes[7].hasFocus ? true : false,
                                   fillColor: focusNodes[7].hasFocus
-                                      ? Color(0xffF0FFFF)
+                                      ? const Color(0xffF0FFFF)
                                       : Colors.transparent,
                                   labelText: 'Creation Date',
                                   border: const OutlineInputBorder(
@@ -772,7 +773,7 @@ class _SaleFormViewState extends State<SaleFormView> {
         labelText: labelText,
         floatingLabelBehavior: FloatingLabelBehavior.always,
         filled: isShow ? true : false,
-        fillColor: isShow ? Color(0xffF0FFFF) : Colors.transparent,
+        fillColor: isShow ? const Color(0xffF0FFFF) : Colors.transparent,
         border: const OutlineInputBorder(borderSide: BorderSide(width: 1.2)),
         focusedBorder:
             const OutlineInputBorder(borderSide: BorderSide(width: 1.2)),
@@ -847,7 +848,7 @@ class _SaleFormViewState extends State<SaleFormView> {
             decoration: InputDecoration(
               filled: focusNodes[3].hasFocus ? true : false,
               fillColor: focusNodes[3].hasFocus
-                  ? Color(0xffF0FFFF)
+                  ? const Color(0xffF0FFFF)
                   : Colors.transparent,
               border:
                   const OutlineInputBorder(borderSide: BorderSide(width: 1.2)),
@@ -913,7 +914,7 @@ class _SaleFormViewState extends State<SaleFormView> {
 
     var record = await isar.saleModels.where().findAll();
     if (record.isNotEmpty) {
-      record.forEach((task) {
+      for (var task in record) {
         if (!itemNameListMap.containsKey(task.itemName)) {
           itemNameListMap[task.itemName] = [];
         }
@@ -930,19 +931,19 @@ class _SaleFormViewState extends State<SaleFormView> {
         supplierNameListMap[task.supplierName]!.add(task);
         farmerNameListMap[task.farmerName]!.add(task);
         customerNameListMap[task.customerName]!.add(task);
-      });
+      }
 
       itemNameListMap.forEach((key, value) {
-        if (key != "") itemNameList.add('$key');
+        if (key != "") itemNameList.add(key);
       });
       supplierNameListMap.forEach((key, value) {
-        if (key != "") supplierNameList.add('$key');
+        if (key != "") supplierNameList.add(key);
       });
       farmerNameListMap.forEach((key, value) {
-        if (key != "") farmerNameList.add('$key');
+        if (key != "") farmerNameList.add(key);
       });
       customerNameListMap.forEach((key, value) {
-        if (key != "") customerNameList.add('$key');
+        if (key != "") customerNameList.add(key);
       });
 
       lastRecord = record.last;

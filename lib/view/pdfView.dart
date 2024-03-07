@@ -1,3 +1,5 @@
+// ignore_for_file: file_names, prefer_typing_uninitialized_variables, avoid_print
+
 import 'package:flutter/material.dart';
 import 'package:webview_windows/webview_windows.dart';
 
@@ -42,7 +44,7 @@ class _PdfViewerState extends State<PdfViewer> {
       );
     } else {
       return Container(
-        padding: EdgeInsets.all(20),
+        padding: const EdgeInsets.all(20),
         child: Card(
           clipBehavior: Clip.antiAliasWithSaveLayer,
           child: Stack(
@@ -53,7 +55,7 @@ class _PdfViewerState extends State<PdfViewer> {
                   builder: (context, snapshot) {
                     if (snapshot.hasData &&
                         snapshot.data == LoadingState.loading) {
-                      return LinearProgressIndicator();
+                      return const LinearProgressIndicator();
                     } else {
                       return Container();
                     }
@@ -62,7 +64,6 @@ class _PdfViewerState extends State<PdfViewer> {
                 padding: const EdgeInsets.only(left: 8.0,top: 5),
                 child: ElevatedButton(
                   onPressed: (){Navigator.pop(context);},
-                  child: Text("Cancel",style: TextStyle(color: Colors.white),),
                   style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all(Colors.cyan),
                     shape: MaterialStatePropertyAll(
@@ -71,6 +72,7 @@ class _PdfViewerState extends State<PdfViewer> {
                       ),
                     )
                   ),
+                  child: const Text("Cancel",style: TextStyle(color: Colors.white),),
                 ),
               ),
             ],

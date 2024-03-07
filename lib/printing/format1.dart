@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_typing_uninitialized_variables, non_constant_identifier_names, use_build_context_synchronously
+
 import 'dart:io';
 
 import 'package:path_provider/path_provider.dart';
@@ -31,12 +33,12 @@ class _PrintFormatOneState extends State<PrintFormatOne> {
     var record = await isar.saleModels.where().findAll();
     Map<String, List<SaleModel>> groupedTasks = {};
 
-    record.forEach((task) {
+    for (var task in record) {
       if (!groupedTasks.containsKey(task.vclNo)) {
         groupedTasks[task.vclNo] = [];
       }
       groupedTasks[task.vclNo]!.add(task);
-    });
+    }
 
     return groupedTasks;
   }
@@ -51,7 +53,7 @@ class _PrintFormatOneState extends State<PrintFormatOne> {
 
   @override
   void initState() {
-    // TODO: implement initState
+   
     super.initState();
     selectedDate = DateTime.now().toString().substring(0, 10);
 
@@ -63,12 +65,12 @@ class _PrintFormatOneState extends State<PrintFormatOne> {
     var record = await isar.saleModels.where().findAll();
     Map<String, List<SaleModel>> groupedTasks = {};
 
-    record.forEach((task) {
+    for (var task in record) {
       if (!groupedTasks.containsKey(task.supplierName)) {
         groupedTasks[task.supplierName] = [];
       }
       groupedTasks[task.supplierName]!.add(task);
-    });
+    }
 
     return groupedTasks;
   }
@@ -150,7 +152,6 @@ class _PrintFormatOneState extends State<PrintFormatOne> {
                                     selectedDate = "";
                                     selected_vcl_no = "";
                                   }
-                                  ;
                                   vclArray.clear();
                                   setState(() {});
                                 },
@@ -182,7 +183,7 @@ class _PrintFormatOneState extends State<PrintFormatOne> {
                     final supplier = saleData.keys.elementAt(index);
                     final sale = saleData[supplier]!;
                     Map<String, List<SaleModel>> data = {};
-                    sale.forEach((element) {
+                    for (var element in sale) {
                       if (selected_vcl_no != "" && selectedDate != "") {
                         // Filter Condition for both VCL no and Date
                         if (element.vclNo.toString() == selected_vcl_no &&
@@ -217,7 +218,7 @@ class _PrintFormatOneState extends State<PrintFormatOne> {
                         data[element.farmerName]!.add(element);
                         //vcl_no = element.vclNo;
                       }
-                    });
+                    }
                     return data.isEmpty
                         ? Container()
                         : Container(

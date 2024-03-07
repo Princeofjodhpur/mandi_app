@@ -5,7 +5,7 @@ import '../printing/format2.dart';
 import '../printing/format3.dart';
 
 class PrintView extends StatelessWidget {
-  PrintView({super.key});
+  const PrintView({super.key});
 
 
 
@@ -36,12 +36,12 @@ class PrintView extends StatelessWidget {
           children: [
             // Content for Format 1
             SizedBox(width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height,child: PrintFormatOne()),
+                height: MediaQuery.of(context).size.height,child: const PrintFormatOne()),
             // Content for Format 2
             SizedBox(width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height,child: PrintFormatTwo()),
+                height: MediaQuery.of(context).size.height,child: const PrintFormatTwo()),
             SizedBox(width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height,child: PrintFormatThree()),
+                height: MediaQuery.of(context).size.height,child: const PrintFormatThree()),
           ],
         ),
       ),

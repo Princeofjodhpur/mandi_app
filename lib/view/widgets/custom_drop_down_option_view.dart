@@ -1,15 +1,17 @@
+// ignore_for_file: avoid_print
+
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 
 class DropDownOptionView extends StatelessWidget {
-  DropDownOptionView({
+  const DropDownOptionView({
     required this.options,
     required this.onSelected,
     super.key,
   });
-  Iterable<String> options;
-  AutocompleteOnSelected<String> onSelected;
+  final Iterable<String> options;
+  final AutocompleteOnSelected<String> onSelected;
 
   @override
   Widget build(BuildContext context) {
