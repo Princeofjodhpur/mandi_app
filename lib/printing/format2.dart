@@ -228,9 +228,9 @@ class _PrintFormatTwoState extends State<PrintFormatTwo> {
                                 height: 40,
                                 alignment: Alignment.center,
                                 padding: const EdgeInsets.only(left: 10),
-                                decoration: const BoxDecoration(
+                                /*decoration: const BoxDecoration(
                                     border: Border(bottom: BorderSide(color: Colors.black),right: BorderSide(color: Colors.black))
-                                ),
+                                ),*/
                                 child: Text(supplier.item1,
                                   style: const TextStyle(fontWeight: FontWeight.bold),),
                               ),
@@ -241,16 +241,16 @@ class _PrintFormatTwoState extends State<PrintFormatTwo> {
                                 height: 40,
                                 alignment: Alignment.center,
                                 padding: const EdgeInsets.only(left: 10),
-                                decoration: const BoxDecoration(
+                                /*decoration: const BoxDecoration(
                                     border: Border(bottom: BorderSide(color: Colors.black),)
-                                ),
+                                ),*/
                                 child: Text(supplier.item2,
                                   style: const TextStyle(fontWeight: FontWeight.bold),),
                               ),
                             ),
                           ],
                         ),
-                        Row(
+                        /*Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             headingContainer("BASIC AMT"),
@@ -259,7 +259,7 @@ class _PrintFormatTwoState extends State<PrintFormatTwo> {
                             headingContainer("NET WEIGHT"),
                             headingContainer("C.R"),
                           ],
-                        ),
+                        ),*/
                         ListView.builder(itemBuilder: (context, index) {
                           return Row(
                             children: [
@@ -282,11 +282,11 @@ class _PrintFormatTwoState extends State<PrintFormatTwo> {
                                 alignment: Alignment.center,
                                 padding: const EdgeInsets.only(
                                     bottom: 10, top: 10, left: 10),
-                                decoration: const BoxDecoration(
+                                /*decoration: const BoxDecoration(
                                     border: Border(
                                         bottom: BorderSide(color: Colors.grey),
                                         right: BorderSide(color: Colors.grey))
-                                ),
+                                ),*/
                                 child: Text(total_basicAmt.toString(),
                                   style: const TextStyle(fontWeight: FontWeight.bold),),
                               ),
@@ -296,11 +296,11 @@ class _PrintFormatTwoState extends State<PrintFormatTwo> {
                               child: Container(
                                 alignment: Alignment.center,
                                 padding: const EdgeInsets.only(bottom: 10, top: 10),
-                                decoration: const BoxDecoration(
+                                /*decoration: const BoxDecoration(
                                     border: Border(
                                         bottom: BorderSide(color: Colors.grey),
                                         right: BorderSide(color: Colors.grey))
-                                ),
+                                ),*/
                                 child: const Text("(TOTAL)", style: TextStyle(fontWeight: FontWeight.bold),),
                               ),
                             ),
@@ -309,11 +309,11 @@ class _PrintFormatTwoState extends State<PrintFormatTwo> {
                               child: Container(
                                 alignment: Alignment.center,
                                 padding: const EdgeInsets.only(bottom: 10, top: 10),
-                                decoration: const BoxDecoration(
+                                /*decoration: const BoxDecoration(
                                     border: Border(
                                         bottom: BorderSide(color: Colors.grey),
                                         right: BorderSide(color: Colors.grey))
-                                ),
+                                ),*/
                                 child: Text(total_c_nug.toString(),
                                   style: const TextStyle(fontWeight: FontWeight.bold),),
                               ),
@@ -324,11 +324,11 @@ class _PrintFormatTwoState extends State<PrintFormatTwo> {
                                 alignment: Alignment.center,
                                 padding: const EdgeInsets.only(
                                     bottom: 10, top: 10, left: 10),
-                                decoration: const BoxDecoration(
+                                /*decoration: const BoxDecoration(
                                     border: Border(
                                         bottom: BorderSide(color: Colors.grey),
                                         right: BorderSide(color: Colors.grey)),
-                                ),
+                                ),*/
                                 child: Text(total_net_weight.toString(),
                                   style: const TextStyle(fontWeight: FontWeight.bold),),
                               ),
@@ -364,10 +364,10 @@ class _PrintFormatTwoState extends State<PrintFormatTwo> {
     return Expanded(
       child: Container(
         alignment: Alignment.center,
-        decoration: const BoxDecoration(
+       /* decoration: const BoxDecoration(
             border: Border(bottom: BorderSide(color: Colors.black),
                 right: BorderSide(color: Colors.black))
-        ),
+        ),*/
         padding: const EdgeInsets.only(bottom: 5, top: 5),
         child: Text(heading, style: const TextStyle(fontWeight: FontWeight.bold),overflow: TextOverflow.ellipsis,),
       ),
@@ -379,10 +379,10 @@ class _PrintFormatTwoState extends State<PrintFormatTwo> {
     return pw.Expanded(
       child: pw.Container(
         alignment: pw.Alignment.center,
-        decoration: const pw.BoxDecoration(
+        /*decoration: const pw.BoxDecoration(
             border: pw.Border(bottom: pw.BorderSide(color: PdfColors.black),
                 right: pw.BorderSide(color: PdfColors.black))
-        ),
+        ),*/
         padding: const pw.EdgeInsets.only(bottom: 5, top: 5),
         child: pw.Text(heading, style: pw.TextStyle(fontWeight: pw.FontWeight.bold),),
       ),
@@ -394,10 +394,10 @@ class _PrintFormatTwoState extends State<PrintFormatTwo> {
     return Expanded(
       child: Container(
         alignment: Alignment.center,
-        decoration: const BoxDecoration(
+        /*decoration: const BoxDecoration(
             border: Border(bottom: BorderSide(color: Colors.grey),
                 right: BorderSide(color: Colors.grey))
-        ),
+        ),*/
         padding: const EdgeInsets.only(bottom: 5, top: 5),
         child: Text(item, style: const TextStyle(fontWeight: FontWeight.normal),),
       ),
@@ -409,10 +409,10 @@ class _PrintFormatTwoState extends State<PrintFormatTwo> {
     return pw.Expanded(
       child: pw.Container(
         alignment: pw.Alignment.center,
-        decoration: const pw.BoxDecoration(
+        /*decoration: const pw.BoxDecoration(
             border: pw.Border(bottom: pw.BorderSide(color: PdfColors.grey),
                 right: pw.BorderSide(color: PdfColors.grey))
-        ),
+        ),*/
         padding: const pw.EdgeInsets.only(bottom: 5, top: 5),
         child: item !="" ? pw.Text(item, style: pw.TextStyle(fontWeight: pw.FontWeight.normal),) : pw.Container(height: 14),
       ),
@@ -501,9 +501,9 @@ class _PrintFormatTwoState extends State<PrintFormatTwo> {
                                   height: 40,
                                   alignment: pw.Alignment.center,
                                   padding: const pw.EdgeInsets.only(left: 10),
-                                  decoration: const pw.BoxDecoration(
+                                  /*decoration: const pw.BoxDecoration(
                                       border: pw.Border(bottom: pw.BorderSide(color: PdfColors.black),right: pw.BorderSide(color: PdfColors.black))
-                                  ),
+                                  ),*/
                                   child: pw.Text(supplier.item1,
                                     style: pw.TextStyle(fontWeight: pw.FontWeight.bold),),
                                 ),
@@ -514,16 +514,16 @@ class _PrintFormatTwoState extends State<PrintFormatTwo> {
                                   height: 40,
                                   alignment: pw.Alignment.center,
                                   padding: const pw.EdgeInsets.only(left: 10),
-                                  decoration: const pw.BoxDecoration(
+                                  /*decoration: const pw.BoxDecoration(
                                       border: pw.Border(bottom: pw.BorderSide(color: PdfColors.black),)
-                                  ),
+                                  ),*/
                                   child: pw.Text(supplier.item2,
                                     style: pw.TextStyle(fontWeight: pw.FontWeight.bold),),
                                 ),
                               ),
                             ],
                           ),
-                          pw.Row(
+                          /*pw.Row(
                             mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                             children: [
                               headingContainerPdf("BASIC AMT"),
@@ -532,7 +532,7 @@ class _PrintFormatTwoState extends State<PrintFormatTwo> {
                               headingContainerPdf("NET WEIGHT"),
                               headingContainerPdf("C.R"),
                             ],
-                          ),
+                          ),*/
                           pw.ListView.builder(itemBuilder: (context, index) {
                             return pw.Row(
                               children: [
@@ -553,11 +553,11 @@ class _PrintFormatTwoState extends State<PrintFormatTwo> {
                                 child: pw.Container(
                                   alignment: pw.Alignment.center,
                                   padding: const pw.EdgeInsets.only(bottom: 10, top: 10, left: 10),
-                                  decoration: const pw.BoxDecoration(
+                                  /*decoration: const pw.BoxDecoration(
                                       border: pw.Border(
                                           bottom: pw.BorderSide(color: PdfColors.grey),
                                           right: pw.BorderSide(color: PdfColors.grey))
-                                  ),
+                                  ),*/
                                   child: pw.Text(total_basicAmt.toString(),
                                     style: pw.TextStyle(fontWeight: pw.FontWeight.bold),),
                                 ),
@@ -567,11 +567,11 @@ class _PrintFormatTwoState extends State<PrintFormatTwo> {
                                 child: pw.Container(
                                   alignment: pw.Alignment.center,
                                   padding: const pw.EdgeInsets.only(bottom: 10, top: 10),
-                                  decoration: const pw.BoxDecoration(
+                                  /*decoration: const pw.BoxDecoration(
                                       border: pw.Border(
                                           bottom: pw.BorderSide(color: PdfColors.grey),
                                           right: pw.BorderSide(color: PdfColors.grey))
-                                  ),
+                                  ),*/
                                   child: pw.Text("(TOTAL)", style: pw.TextStyle(fontWeight: pw.FontWeight.bold),),
                                 ),
                               ),
@@ -580,11 +580,11 @@ class _PrintFormatTwoState extends State<PrintFormatTwo> {
                                 child: pw.Container(
                                   alignment: pw.Alignment.center,
                                   padding: const pw.EdgeInsets.only(bottom: 10, top: 10),
-                                  decoration: const pw.BoxDecoration(
+                                  /*decoration: const pw.BoxDecoration(
                                       border: pw.Border(
                                           bottom: pw.BorderSide(color: PdfColors.grey),
                                           right: pw.BorderSide(color: PdfColors.grey))
-                                  ),
+                                  ),*/
                                   child: pw.Text(total_c_nug.toString(),
                                     style: pw.TextStyle(fontWeight: pw.FontWeight.bold),),
                                 ),
@@ -595,11 +595,11 @@ class _PrintFormatTwoState extends State<PrintFormatTwo> {
                                   alignment: pw.Alignment.center,
                                   padding: const pw.EdgeInsets.only(
                                       bottom: 10, top: 10, left: 10),
-                                  decoration: const pw.BoxDecoration(
+                                  /*decoration: const pw.BoxDecoration(
                                     border: pw.Border(
                                         bottom: pw.BorderSide(color: PdfColors.grey),
                                         right: pw.BorderSide(color: PdfColors.grey)),
-                                  ),
+                                  ),*/
                                   child: pw.Text(total_net_weight.toString(),
                                     style: pw.TextStyle(fontWeight: pw.FontWeight.bold),),
                                 ),

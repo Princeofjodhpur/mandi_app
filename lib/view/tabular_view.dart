@@ -84,6 +84,11 @@ class _TabularViewState extends State<TabularView> {
               }
               saleModel.clear();
               sale = _MyDataSource(saleModel, _dataGridController, stateSetter);
+
+              // To update the datagrid rows.
+              sale.updateDataGrid();
+              // To update the datagrid view.
+              setState(() {});
             },
             icon: const Icon(Icons.delete_rounded),
           ),
@@ -190,6 +195,7 @@ class _TabularViewState extends State<TabularView> {
               key: _dataGridKey,
               allowColumnsResizing: true,
               editingGestureType: EditingGestureType.tap,
+
               allowEditing: true,
               selectionMode: SelectionMode.single,
               navigationMode: GridNavigationMode.cell,
@@ -667,8 +673,8 @@ class _MyDataSource extends DataGridSource {
                   }
                   // To update the datagrid rows.
                   notifyListeners();
-                  // To update the datagrid view.
-                  _setState(() {});
+                  /*// To update the datagrid view.
+                  _setState(() {});*/
                 },
               ),
             )
@@ -802,6 +808,14 @@ class _MyDataSource extends DataGridSource {
   }
 
   @override
+  bool onCellBeginEdit(DataGridRow dataGridRow, RowColumnIndex rowColumnIndex, GridColumn column) {
+    // TODO: implement onCellBeginEdit
+
+    return super.onCellBeginEdit(dataGridRow, rowColumnIndex, column);
+
+  }
+
+  @override
   Widget? buildEditWidget(DataGridRow dataGridRow, RowColumnIndex rowColumnIndex, GridColumn column, CellSubmit submitCell) {
     // Text going to display on editable widget
     final String displayText = dataGridRow
@@ -879,15 +893,18 @@ class _MyDataSource extends DataGridSource {
         if (key != "") listItem.add('$key');
       });
     }
-    if (editingController.text.isNotEmpty) {
-      editingController.selection = TextSelection(
-          baseOffset: 0, extentOffset: editingController.text.length);
+    if(column.columnName == 'lot'){
+      editingController.text = lotValue;
+    }else{
+      editingController.text = displayText;
     }
+    editingController.selection = TextSelection(baseOffset: 0, extentOffset:editingController.text.length);
+
     return Container(
       padding: const EdgeInsets.all(8.0),
       alignment: isNumericType ? Alignment.centerRight : Alignment.centerLeft,
       child: column.columnName == 'lot'? RawAutocomplete<String>(
-        textEditingController: editingController..text = lotValue,
+        textEditingController: editingController,
         focusNode: FocusNode(),
         optionsBuilder: (TextEditingValue textEditingValue) {
           if (textEditingValue.text == '') {
@@ -922,12 +939,20 @@ class _MyDataSource extends DataGridSource {
             FocusNode focusNode,
             VoidCallback onFieldSubmitted,
             ) {
+
           return TextFormField(
             keyboardType: TextInputType.text,
             controller: textEditingController,
             focusNode: focusNode,
             onFieldSubmitted: (String value) {
               onFieldSubmitted();
+            },
+            onTap: () {
+              // Select all text when the field is tapped
+              textEditingController.selection = TextSelection(
+                baseOffset: 0,
+                extentOffset: textEditingController.text.length,
+              );
             },
             onChanged: (selection) {
               if(selection == "Plate"){
@@ -980,13 +1005,12 @@ class _MyDataSource extends DataGridSource {
           ? TextFormField(
               enableSuggestions: true,
               autofocus: true,
-              controller: editingController..text = displayText,
+              controller: editingController,
               textAlign: isNumericType ? TextAlign.right : TextAlign.left,
               decoration: const InputDecoration(
                 contentPadding: EdgeInsets.fromLTRB(0, 0, 0, 16.0),
               ),
-              keyboardType:
-                  isNumericType ? TextInputType.number : TextInputType.text,
+              keyboardType: isNumericType ? TextInputType.number : TextInputType.text,
               onChanged: (String value) {
                 if (value.isNotEmpty) {
                   if (isNumericType) {
@@ -1006,7 +1030,7 @@ class _MyDataSource extends DataGridSource {
               },
             ) :
           RawAutocomplete<String>(
-              textEditingController: editingController..text = displayText,
+              textEditingController: editingController,
               focusNode: FocusNode(),
               optionsBuilder: (TextEditingValue textEditingValue) {
                 if (textEditingValue.text == '') {
@@ -1033,6 +1057,7 @@ class _MyDataSource extends DataGridSource {
                 FocusNode focusNode,
                 VoidCallback onFieldSubmitted,
               ) {
+
                 return TextFormField(
                   keyboardType: TextInputType.text,
                   controller: textEditingController,
@@ -1040,7 +1065,15 @@ class _MyDataSource extends DataGridSource {
                   onFieldSubmitted: (String value) {
                     onFieldSubmitted();
                   },
+                  onTap: () {
+                    // Select all text when the field is tapped
+                    textEditingController.selection = TextSelection(
+                      baseOffset: 0,
+                      extentOffset: textEditingController.text.length,
+                    );
+                  },
                   onChanged: (newValue) {
+
                     newCellValue = newValue;
                   },
                 );
@@ -1050,6 +1083,7 @@ class _MyDataSource extends DataGridSource {
                 AutocompleteOnSelected<String> onSelected,
                 Iterable<String> options,
               ) {
+
                 return Align(
                   alignment: Alignment.topLeft,
                   child: Material(

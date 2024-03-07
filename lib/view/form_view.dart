@@ -151,6 +151,10 @@ class _SaleFormViewState extends State<SaleFormView> {
             bindings: <ShortcutActivator, VoidCallback>{
               const SingleActivator(LogicalKeyboardKey.enter): () {},
               const SingleActivator(LogicalKeyboardKey.tab): () {},
+              const SingleActivator(
+                LogicalKeyboardKey.tab,
+                shift: true, // Indicate that Shift key is pressed
+              ): () {},
             },
             child: Form(
               key: _formKey,
@@ -163,8 +167,15 @@ class _SaleFormViewState extends State<SaleFormView> {
                       });
                       return KeyEventResult.handled;
                     } if (event.runtimeType == RawKeyUpEvent && event.logicalKey == LogicalKeyboardKey.tab ) {
-                      focusNode.nextFocus();
-                      setState(() {});
+                      if (event.isShiftPressed) {
+                        focusNode.previousFocus();
+                        setState(() {});
+                        // Handle Shift + Tab key
+                        // Add your functionality here for Shift + Tab
+                      } else {
+                        focusNode.nextFocus();
+                        setState(() {});
+                      }
                       return KeyEventResult.handled;
                     }
 
@@ -175,6 +186,8 @@ class _SaleFormViewState extends State<SaleFormView> {
                     buildRow([
                       TextFormField(
                         onTap: (){
+                          //srnoController.selection = TextSelection(baseOffset: 0, extentOffset:srnoController.text.length);
+
                           focusNodes[0].requestFocus();
                           setState(() {
 

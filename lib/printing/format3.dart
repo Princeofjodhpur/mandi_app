@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
@@ -40,6 +41,7 @@ class _PrintFormatThreeState extends State<PrintFormatThree> {
       focusNode: FocusNode(),
       autofocus: true,
       onKey: (event) async {
+        print("kfdcjskd");
         if ((event.isKeyPressed(LogicalKeyboardKey.controlLeft) ||
             event.isKeyPressed(LogicalKeyboardKey.controlRight)) &&
             event.isKeyPressed(LogicalKeyboardKey.keyP)) {
@@ -62,7 +64,7 @@ class _PrintFormatThreeState extends State<PrintFormatThree> {
                     lastDate: DateTime.now(),
                     initialEntryMode: DatePickerEntryMode.calendarOnly
                 );
-      
+
                 if (tillDate != null) {
                   //startingDate.text = datePicked.toString();
                   selectedDate = DateFormat('yyyy-MM-dd').format(tillDate);
@@ -85,7 +87,7 @@ class _PrintFormatThreeState extends State<PrintFormatThree> {
                       vclArray.add(vehicle.toString());
                       setState(() {});
                     });
-      
+
                     // dialog show after vehicle sorting
                     showDialog(
                       context: context, builder: (builder){
@@ -123,7 +125,7 @@ class _PrintFormatThreeState extends State<PrintFormatThree> {
               final saleData = snapshot.data!;
               data = saleData;
               return ListView.builder(itemBuilder: (context, index) {
-                final supplier = saleData.keys.elementAt(index);
+                final supplier = saleData.keys.elementAt(index) ;
 
                 final sale = saleData[supplier]!;
                 var vcl_no,sr_no,date;
@@ -176,7 +178,8 @@ class _PrintFormatThreeState extends State<PrintFormatThree> {
                 int total_charges = total_labour+total_freight_charges+total_other_charges;
 
                 total_amt = total_bikri_amt-total_charges;
-
+                DateTime tempDate = new DateFormat("yyyy-MM-dd").parse( selectedDate != "" ? selectedDate: date);
+                String showDate = tempDate.day.toString()+"/"+tempDate.month.toString()+"/"+tempDate.year.toString();
 
                 return show_item.isEmpty ? Container() : Container(
                   margin: const EdgeInsets.all(20),
@@ -197,8 +200,17 @@ class _PrintFormatThreeState extends State<PrintFormatThree> {
                                       bottom: BorderSide(color: Colors.black),
                                       right: BorderSide(color: Colors.black))
                               ),
-                              child: Text(supplier,
-                                style: const TextStyle(fontWeight: FontWeight.bold),),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(supplier,
+                                    style: const TextStyle(fontWeight: FontWeight.bold),),
+                                  DottedLine(lineLength: double.infinity,),
+                                  Text("",
+                                    style: const TextStyle(fontWeight: FontWeight.bold),),
+                                  DottedLine(lineLength: double.infinity,)
+                                ],
+                              ),
                             ),
                           ),
                           Expanded(
@@ -213,15 +225,14 @@ class _PrintFormatThreeState extends State<PrintFormatThree> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.end,
                                 children: [
-                                  Text("VCL NO. :- $vcl_no", style: const TextStyle(
+                                  Text("$vcl_no", style: const TextStyle(
                                       fontWeight: FontWeight.bold),),
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.end,
                                     children: [
-                                      selectedDate != "" ? Text("Date :- $selectedDate", style: const TextStyle(
-                                          fontWeight: FontWeight.bold),) : Text("Date :- $date", style: const TextStyle(
+                                      Text("$showDate", style: const TextStyle(
                                           fontWeight: FontWeight.bold),),
-                                      Text(", SR. NO. :- $sr_no", style: const TextStyle(
+                                      Text("                  $sr_no", style: const TextStyle(
                                           fontWeight: FontWeight.bold),),
                                     ],
                                   ),
@@ -231,26 +242,26 @@ class _PrintFormatThreeState extends State<PrintFormatThree> {
                           ),
                         ],
                       ),
-                      Container(
+                      /*Container(
                         width: double.maxFinite,
                         alignment: Alignment.center,
                         padding: const EdgeInsets.only(top: 5, bottom: 5),
-                        decoration: const BoxDecoration(
+                        *//*decoration: const BoxDecoration(
                             border: Border(
                                 bottom: BorderSide(color: Colors.black))
-                        ),
+                        ),*//*
                         child: const Text("DESCRIPTION OF GOODS",
                           style: TextStyle(fontWeight: FontWeight.bold),),
-                      ),
+                      ),*/
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           headingContainer("ITEM"),
                           headingContainer("FARMER"),
                           headingContainer("LOT"),
-                          headingContainer("S.NUG"),
-                          headingContainer("AVG W."),
-                          headingContainer("S RATE"),
+                          headingContainer("NUG"),
+                          headingContainer("Weight"),
+                          headingContainer("RATE"),
                           headingContainer("RATE P N"),
                           headingContainer("BIKRI AMT"),
                         ],
@@ -273,19 +284,23 @@ class _PrintFormatThreeState extends State<PrintFormatThree> {
                         itemCount: show_item.length,
                         shrinkWrap: true,
                       ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 5.0,bottom: 5),
+                        child: DottedLine(),
+                      ),
                       Row(
                         children: [
                           Expanded(
                             flex: 3,
                             child: Container(
                               padding: const EdgeInsets.only(
-                                  bottom: 10, top: 10, left: 10),
-                              decoration: const BoxDecoration(
+                                  bottom: 2, top: 2, left: 10),
+                              /*decoration: const BoxDecoration(
                                   border: Border(
                                       bottom: BorderSide(color: Colors.grey),
                                       right: BorderSide(color: Colors.grey))
-                              ),
-                              child: const Text("(Payment Mode)",
+                              ),*/
+                              child: const Text("Payment Mode",
                                 style: TextStyle(fontWeight: FontWeight.bold),),
                             ),
                           ),
@@ -293,12 +308,12 @@ class _PrintFormatThreeState extends State<PrintFormatThree> {
                             flex: 1,
                             child: Container(
                               alignment: Alignment.center,
-                              padding: const EdgeInsets.only(bottom: 10, top: 10),
-                              decoration: const BoxDecoration(
+                              padding: const EdgeInsets.only(bottom: 2, top: 2),
+                             /* decoration: const BoxDecoration(
                                   border: Border(
                                       bottom: BorderSide(color: Colors.grey),
                                       right: BorderSide(color: Colors.grey))
-                              ),
+                              ),*/
                               child: Text(totalNug.toString(),
                                 style: const TextStyle(fontWeight: FontWeight.bold),),
                             ),
@@ -307,12 +322,12 @@ class _PrintFormatThreeState extends State<PrintFormatThree> {
                             flex: 1,
                             child: Container(
                               alignment: Alignment.center,
-                              padding: const EdgeInsets.only(bottom: 10, top: 10),
-                              decoration: const BoxDecoration(
+                              padding: const EdgeInsets.only(bottom: 2, top: 2),
+                              /*decoration: const BoxDecoration(
                                   border: Border(
                                       bottom: BorderSide(color: Colors.grey),
                                       right: BorderSide(color: Colors.grey))
-                              ),
+                              ),*/
                               child: Text(total_avg_weigth.toString(),
                                 style: const TextStyle(fontWeight: FontWeight.bold),),
                             ),
@@ -321,13 +336,13 @@ class _PrintFormatThreeState extends State<PrintFormatThree> {
                             flex: 2,
                             child: Container(
                               padding: const EdgeInsets.only(
-                                  bottom: 10, top: 10, left: 10),
-                              decoration: const BoxDecoration(
+                                  bottom: 2, top: 2, left: 10),
+                              /*decoration: const BoxDecoration(
                                   border: Border(
                                       bottom: BorderSide(color: Colors.grey),
                                       right: BorderSide(color: Colors.grey))
-                              ),
-                              child: const Text("(BASIC AMT)",
+                              ),*/
+                              child: const Text("BASIC AMT",
                                 style: TextStyle(fontWeight: FontWeight.bold),),
                             ),
                           ),
@@ -335,11 +350,11 @@ class _PrintFormatThreeState extends State<PrintFormatThree> {
                             flex: 1,
                             child: Container(
                               alignment: Alignment.center,
-                              padding: const EdgeInsets.only(bottom: 10, top: 10),
-                              decoration: const BoxDecoration(
+                              padding: const EdgeInsets.only(bottom: 2, top: 2),
+                              /*decoration: const BoxDecoration(
                                   border: Border(
                                       bottom: BorderSide(color: Colors.grey))
-                              ),
+                              ),*/
                               child: Text(total_bikri_amt.toString(),
                                 style: const TextStyle(fontWeight: FontWeight.bold),),
                             ),
@@ -356,13 +371,12 @@ class _PrintFormatThreeState extends State<PrintFormatThree> {
                             flex: 1,
                             child: Container(
                               alignment: Alignment.center,
-                              padding: const EdgeInsets.only(bottom: 10, top: 10),
-                              decoration: const BoxDecoration(
+                              /*decoration: const BoxDecoration(
                                   border: Border(
                                       bottom: BorderSide(color: Colors.grey),
                                       left: BorderSide(color: Colors.grey))
-                              ),
-                              child: const Text("(OTHER CHARGES)",
+                              ),*/
+                              child: const Text("OTHER CHARGES",
                                 style: TextStyle(fontWeight: FontWeight.bold),),
                             ),
                           ),
@@ -370,12 +384,11 @@ class _PrintFormatThreeState extends State<PrintFormatThree> {
                             flex: 1,
                             child: Container(
                               alignment: Alignment.center,
-                              padding: const EdgeInsets.only(bottom: 10, top: 10),
-                              decoration: const BoxDecoration(
+                              /*decoration: const BoxDecoration(
                                   border: Border(
                                       bottom: BorderSide(color: Colors.grey),
                                       right: BorderSide(color: Colors.grey))
-                              ),
+                              ),*/
                               child: Text(total_other_charges.toString(),
                                 style: const TextStyle(fontWeight: FontWeight.bold),),
                             ),
@@ -387,14 +400,13 @@ class _PrintFormatThreeState extends State<PrintFormatThree> {
                           Expanded(
                             flex: 2,
                             child: Container(
-                              padding: const EdgeInsets.only(
-                                  bottom: 10, top: 10, left: 10),
-                              decoration: const BoxDecoration(
+                              padding: const EdgeInsets.only(bottom: 2, top: 2, left: 10),
+                              /*decoration: const BoxDecoration(
                                   border: Border(
                                       bottom: BorderSide(color: Colors.grey),
                                       left: BorderSide(color: Colors.grey))
-                              ),
-                              child: const Text("(TOTAL CHARGES)",
+                              ),*/
+                              child: const Text("TOTAL CHARGES",
                                 style: TextStyle(fontWeight: FontWeight.bold),),
                             ),
                           ),
@@ -402,13 +414,13 @@ class _PrintFormatThreeState extends State<PrintFormatThree> {
                             flex: 1,
                             child: Container(
                               alignment: Alignment.center,
-                              padding: const EdgeInsets.only(bottom: 10, top: 10),
-                              decoration: const BoxDecoration(
+                              padding: const EdgeInsets.only(bottom: 2, top: 2),
+                             /* decoration: const BoxDecoration(
                                   border: Border(
                                       bottom: BorderSide(color: Colors.grey),
                                       left: BorderSide(color: Colors.grey))
-                              ),
-                              child: Text(total_charges.toString(),
+                              ),*/
+                              child: Text("("+total_charges.toString()+")",
                                 style: const TextStyle(fontWeight: FontWeight.bold),),
                             ),
                           ),
@@ -424,13 +436,12 @@ class _PrintFormatThreeState extends State<PrintFormatThree> {
                             flex: 1,
                             child: Container(
                               alignment: Alignment.center,
-                              padding: const EdgeInsets.only(bottom: 10, top: 10),
-                              decoration: const BoxDecoration(
+                              /*decoration: const BoxDecoration(
                                   border: Border(
                                       bottom: BorderSide(color: Colors.grey),
                                       left: BorderSide(color: Colors.grey))
-                              ),
-                              child: const Text("(FREIGHT)",
+                              ),*/
+                              child: const Text("FREIGHT",
                                 style: TextStyle(fontWeight: FontWeight.bold),),
                             ),
                           ),
@@ -438,12 +449,11 @@ class _PrintFormatThreeState extends State<PrintFormatThree> {
                             flex: 1,
                             child: Container(
                               alignment: Alignment.center,
-                              padding: const EdgeInsets.only(bottom: 10, top: 10),
-                              decoration: const BoxDecoration(
+                              /*decoration: const BoxDecoration(
                                   border: Border(
                                       bottom: BorderSide(color: Colors.grey),
                                       right: BorderSide(color: Colors.grey))
-                              ),
+                              ),*/
                               child: Text(total_freight_charges.toString(),
                                 style: const TextStyle(fontWeight: FontWeight.bold),),
                             ),
@@ -455,14 +465,13 @@ class _PrintFormatThreeState extends State<PrintFormatThree> {
                           Expanded(
                             flex: 2,
                             child: Container(
-                              padding: const EdgeInsets.only(
-                                  bottom: 10, top: 10, left: 10),
-                              decoration: const BoxDecoration(
+                              padding: const EdgeInsets.only( left: 10),
+                              /*decoration: const BoxDecoration(
                                   border: Border(
                                       bottom: BorderSide(color: Colors.grey),
                                       left: BorderSide(color: Colors.grey))
-                              ),
-                              child: const Text("(TOTAL AMT)",
+                              ),*/
+                              child: const Text("TOTAL AMT",
                                 style: TextStyle(fontWeight: FontWeight.bold),),
                             ),
                           ),
@@ -470,14 +479,19 @@ class _PrintFormatThreeState extends State<PrintFormatThree> {
                             flex: 1,
                             child: Container(
                               alignment: Alignment.center,
-                              padding: const EdgeInsets.only(bottom: 10, top: 10),
-                              decoration: const BoxDecoration(
+
+                              /*decoration: const BoxDecoration(
                                   border: Border(
                                       bottom: BorderSide(color: Colors.grey),
                                       left: BorderSide(color: Colors.grey))
+                              ),*/
+                              child: Column(
+                                children: [
+                                  Divider(height: 5,color: Colors.black,),
+                                  Text(total_amt.toString(), style: const TextStyle(fontWeight: FontWeight.bold),),
+                                  Divider(height: 5,color: Colors.black,),
+                                ],
                               ),
-                              child: Text(total_amt.toString(),
-                                style: const TextStyle(fontWeight: FontWeight.bold),),
                             ),
                           ),
                         ],
@@ -492,13 +506,12 @@ class _PrintFormatThreeState extends State<PrintFormatThree> {
                             flex: 1,
                             child: Container(
                               alignment: Alignment.center,
-                              padding: const EdgeInsets.only(bottom: 10, top: 10),
-                              decoration: const BoxDecoration(
+                              /*decoration: const BoxDecoration(
                                   border: Border(
                                       bottom: BorderSide(color: Colors.grey),
                                       left: BorderSide(color: Colors.grey))
-                              ),
-                              child: const Text("(LABOUR)",
+                              ),*/
+                              child: const Text("LABOUR",
                                 style: TextStyle(fontWeight: FontWeight.bold),),
                             ),
                           ),
@@ -506,12 +519,11 @@ class _PrintFormatThreeState extends State<PrintFormatThree> {
                             flex: 1,
                             child: Container(
                               alignment: Alignment.center,
-                              padding: const EdgeInsets.only(bottom: 10, top: 10),
-                              decoration: const BoxDecoration(
+                              /*decoration: const BoxDecoration(
                                   border: Border(
                                       bottom: BorderSide(color: Colors.grey),
                                       right: BorderSide(color: Colors.grey))
-                              ),
+                              ),*/
                               child: Text(total_labour.toString(),
                                 style: const TextStyle(fontWeight: FontWeight.bold),),
                             ),
@@ -603,10 +615,10 @@ class _PrintFormatThreeState extends State<PrintFormatThree> {
     return Expanded(
       child: Container(
         alignment: Alignment.center,
-        decoration: const BoxDecoration(
+        /*decoration: const BoxDecoration(
             border: Border(bottom: BorderSide(color: Colors.black),
                 right: BorderSide(color: Colors.black))
-        ),
+        ),*/
         padding: const EdgeInsets.only(bottom: 5, top: 5),
         child: Text(heading, style: const TextStyle(fontWeight: FontWeight.bold),),
       ),
@@ -616,10 +628,10 @@ class _PrintFormatThreeState extends State<PrintFormatThree> {
     return pw.Expanded(
       child: pw.Container(
         alignment: pw.Alignment.center,
-        decoration: const pw.BoxDecoration(
+       /* decoration: const pw.BoxDecoration(
             border: pw.Border(bottom: pw.BorderSide(color: PdfColors.black),
                 right: pw.BorderSide(color: PdfColors.black))
-        ),
+        ),*/
         padding:  pw.EdgeInsets.only(bottom: 5, top: 5),
         child: pw.Text(heading, style: pw.TextStyle(fontWeight: pw.FontWeight.bold),),
       ),
@@ -630,10 +642,10 @@ class _PrintFormatThreeState extends State<PrintFormatThree> {
     return Expanded(
       child: Container(
         alignment: Alignment.center,
-        decoration: const BoxDecoration(
+        /*decoration: const BoxDecoration(
             border: Border(bottom: BorderSide(color: Colors.grey),
                 right: BorderSide(color: Colors.grey))
-        ),
+        ),*/
         padding: const EdgeInsets.only(bottom: 5, top: 5),
         child: Text(item, style: const TextStyle(fontWeight: FontWeight.normal),),
       ),
@@ -643,11 +655,11 @@ class _PrintFormatThreeState extends State<PrintFormatThree> {
   pw.Widget listingContainerPDF(String item) {
     return pw.Expanded(
       child: pw.Container(
-        alignment: pw.Alignment.center,
+        alignment: pw.Alignment.center,/*
         decoration: const pw.BoxDecoration(
             border: pw.Border(bottom: pw.BorderSide(color: PdfColors.grey),
                 right: pw.BorderSide(color: PdfColors.grey))
-        ),
+        ),*/
         padding: const pw.EdgeInsets.only(bottom: 5, top: 5),
         child: pw.Text(item, style: pw.TextStyle(fontWeight: pw.FontWeight.normal),),
       ),
@@ -720,8 +732,8 @@ class _PrintFormatThreeState extends State<PrintFormatThree> {
               int total_charges = total_labour+total_freight_charges+total_other_charges;
 
               total_amt = total_bikri_amt-total_charges;
-
-
+              DateTime tempDate = new DateFormat("yyyy-MM-dd").parse( selectedDate != "" ? selectedDate: date);
+              String showDate = tempDate.day.toString()+"/"+tempDate.month.toString()+"/"+tempDate.year.toString();
               return show_item.isEmpty ? pw.Container() : pw.Container(
                 margin: const pw.EdgeInsets.all(20),
                 decoration: pw.BoxDecoration(
@@ -741,8 +753,36 @@ class _PrintFormatThreeState extends State<PrintFormatThree> {
                                     bottom: pw.BorderSide(color: PdfColors.black),
                                     right: pw.BorderSide(color: PdfColors.black))
                             ),
-                            child: pw.Text(supplier,
-                              style: pw.TextStyle(fontWeight: pw.FontWeight.bold),),
+                            child: pw.Column(
+                              crossAxisAlignment: pw.CrossAxisAlignment.start,
+                              children: [
+                                pw.Text(supplier,
+                                  style: pw.TextStyle(fontWeight: pw.FontWeight.bold),),
+                                pw.Flex(
+                                    children: List.generate(44, (_) {
+                                      return pw.Container(
+                                        margin: pw.EdgeInsets.symmetric(horizontal: 2),
+                                        width: 2,
+                                        height: 1,
+                                        child: pw.DecoratedBox(
+                                          decoration: pw.BoxDecoration(color: PdfColors.black),
+                                        ),
+                                      );
+                                    }), direction: pw.Axis.horizontal),
+                                pw.SizedBox(height: 15,),
+                                pw.Flex(
+                                    children: List.generate(44, (_) {
+                                      return pw.Container(
+                                        margin: pw.EdgeInsets.symmetric(horizontal: 2),
+                                        width: 2,
+                                        height: 1,
+                                        child: pw.DecoratedBox(
+                                          decoration: pw.BoxDecoration(color: PdfColors.black),
+                                        ),
+                                      );
+                                    }), direction: pw.Axis.horizontal),
+                              ]
+                            )
                           ),
                         ),
                         pw.Expanded(
@@ -757,15 +797,14 @@ class _PrintFormatThreeState extends State<PrintFormatThree> {
                             child: pw.Column(
                               crossAxisAlignment: pw.CrossAxisAlignment.end,
                               children: [
-                                pw.Text("VCL NO. :- $vcl_no", style: pw.TextStyle(
+                                pw.Text(vcl_no, style: pw.TextStyle(
                                     fontWeight: pw.FontWeight.bold),),
                                 pw.Row(
                                   mainAxisAlignment: pw.MainAxisAlignment.end,
                                   children: [
-                                    selectedDate != "" ? pw.Text("Date :- $selectedDate", style:  pw.TextStyle(
-                                        fontWeight: pw.FontWeight.bold),) : pw.Text("Date :- $date", style:  pw.TextStyle(
+                                    pw.Text("$showDate", style:  pw.TextStyle(
                                         fontWeight: pw.FontWeight.bold),),
-                                    pw.Text(", SR. NO. :- $sr_no", style: pw.TextStyle(
+                                    pw.Text("                  $sr_no", style: pw.TextStyle(
                                         fontWeight: pw.FontWeight.bold),),
                                   ],
                                 ),
@@ -775,26 +814,15 @@ class _PrintFormatThreeState extends State<PrintFormatThree> {
                         ),
                       ],
                     ),
-                    pw.Container(
-                      width: double.maxFinite,
-                      alignment: pw.Alignment.center,
-                      padding: const pw.EdgeInsets.only(top: 5, bottom: 5),
-                      decoration: const pw.BoxDecoration(
-                          border: pw.Border(
-                              bottom: pw.BorderSide(color: PdfColors.black))
-                      ),
-                      child:  pw.Text("DESCRIPTION OF GOODS",
-                        style: pw.TextStyle(fontWeight: pw.FontWeight.bold),),
-                    ),
                     pw.Row(
                       mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                       children: [
                         headingContainerPDF("ITEM"),
                         headingContainerPDF("FARMER"),
                         headingContainerPDF("LOT"),
-                        headingContainerPDF("S.NUG"),
-                        headingContainerPDF("AVG W."),
-                        headingContainerPDF("S RATE"),
+                        headingContainerPDF("NUG"),
+                        headingContainerPDF("Weight"),
+                        headingContainerPDF("RATE"),
                         headingContainerPDF("RATE P N"),
                         headingContainerPDF("BIKRI AMT"),
                       ],
@@ -816,19 +844,30 @@ class _PrintFormatThreeState extends State<PrintFormatThree> {
                     },
                       itemCount: show_item.length,
                     ),
+                    pw.Flex(
+                        children: List.generate(91, (_) {
+                          return pw.Container(
+                            margin: pw.EdgeInsets.symmetric(horizontal: 2),
+                            width: 2,
+                            height: 1,
+                            child: pw.DecoratedBox(
+                              decoration: pw.BoxDecoration(color: PdfColors.black),
+                            ),
+                          );
+                        }), direction: pw.Axis.horizontal),
                     pw.Row(
                       children: [
                         pw.Expanded(
                           flex: 3,
                           child: pw.Container(
                             padding: const pw.EdgeInsets.only(
-                                bottom: 10, top: 10, left: 10),
-                            decoration: pw.BoxDecoration(
+                                bottom: 2, top: 2, left: 10),
+                            /*decoration: pw.BoxDecoration(
                                 border: pw.Border(
                                     bottom: pw.BorderSide(color: PdfColors.grey),
                                     right: pw.BorderSide(color: PdfColors.grey))
-                            ),
-                            child:  pw.Text("(Payment Mode)",
+                            ),*/
+                            child:  pw.Text("Payment Mode",
                               style: pw.TextStyle(fontWeight: pw.FontWeight.bold),),
                           ),
                         ),
@@ -836,12 +875,12 @@ class _PrintFormatThreeState extends State<PrintFormatThree> {
                           flex: 1,
                           child: pw.Container(
                             alignment: pw.Alignment.center,
-                            padding: const pw.EdgeInsets.only(bottom: 10, top: 10),
-                            decoration: const pw.BoxDecoration(
+                            padding: const pw.EdgeInsets.only(bottom: 2, top: 2),
+                           /* decoration: const pw.BoxDecoration(
                                 border: pw.Border(
                                     bottom: pw.BorderSide(color: PdfColors.grey),
                                     right: pw.BorderSide(color: PdfColors.grey))
-                            ),
+                            ),*/
                             child: pw.Text(totalNug.toString(),
                               style: pw.TextStyle(fontWeight: pw.FontWeight.bold),),
                           ),
@@ -850,12 +889,12 @@ class _PrintFormatThreeState extends State<PrintFormatThree> {
                           flex: 1,
                           child: pw.Container(
                             alignment: pw.Alignment.center,
-                            padding: const pw.EdgeInsets.only(bottom: 10, top: 10),
-                            decoration: const pw.BoxDecoration(
+                            padding: const pw.EdgeInsets.only(bottom: 2, top: 2),
+                            /*decoration: const pw.BoxDecoration(
                                 border: pw.Border(
                                     bottom: pw.BorderSide(color: PdfColors.grey),
                                     right: pw.BorderSide(color: PdfColors.grey))
-                            ),
+                            ),*/
                             child: pw.Text(total_avg_weigth.toString(),
                               style: pw.TextStyle(fontWeight: pw.FontWeight.bold),),
                           ),
@@ -864,13 +903,13 @@ class _PrintFormatThreeState extends State<PrintFormatThree> {
                           flex: 2,
                           child: pw.Container(
                             padding: const pw.EdgeInsets.only(
-                                bottom: 10, top: 10, left: 10),
-                            decoration: const pw.BoxDecoration(
+                                bottom: 2, top: 2, left: 10),
+                            /*decoration: const pw.BoxDecoration(
                                 border: pw.Border(
                                     bottom: pw.BorderSide(color: PdfColors.grey),
                                     right: pw.BorderSide(color: PdfColors.grey))
-                            ),
-                            child: pw.Text("(BASIC AMT)",
+                            ),*/
+                            child: pw.Text("BASIC AMT",
                               style: pw.TextStyle(fontWeight: pw.FontWeight.bold),),
                           ),
                         ),
@@ -878,11 +917,11 @@ class _PrintFormatThreeState extends State<PrintFormatThree> {
                           flex: 1,
                           child: pw.Container(
                             alignment: pw.Alignment.center,
-                            padding: const pw.EdgeInsets.only(bottom: 10, top: 10),
-                            decoration: const pw.BoxDecoration(
+                            padding: const pw.EdgeInsets.only(bottom: 2, top: 2),
+                            /*decoration: const pw.BoxDecoration(
                                 border: pw.Border(
                                     bottom: pw.BorderSide(color: PdfColors.grey))
-                            ),
+                            ),*/
                             child: pw.Text(total_bikri_amt.toString(),
                               style: pw.TextStyle(fontWeight: pw.FontWeight.bold),),
                           ),
@@ -899,13 +938,13 @@ class _PrintFormatThreeState extends State<PrintFormatThree> {
                           flex: 2,
                           child: pw.Container(
                             alignment: pw.Alignment.center,
-                            padding: const pw.EdgeInsets.only(bottom: 10, top: 10),
-                            decoration: const pw.BoxDecoration(
+                            padding: const pw.EdgeInsets.only(bottom: 2, top: 2),
+                           /* decoration: const pw.BoxDecoration(
                                 border: pw.Border(
                                     bottom: pw.BorderSide(color: PdfColors.grey),
                                     left: pw.BorderSide(color: PdfColors.grey))
-                            ),
-                            child: pw.Text("(OTHER CHARGES)",
+                            ),*/
+                            child: pw.Text("OTHER CHARGES",
                               style: pw.TextStyle(fontWeight: pw.FontWeight.bold),),
                           ),
                         ),
@@ -913,12 +952,12 @@ class _PrintFormatThreeState extends State<PrintFormatThree> {
                           flex: 1,
                           child: pw.Container(
                             alignment: pw.Alignment.center,
-                            padding: const pw.EdgeInsets.only(bottom: 10, top: 10),
-                            decoration: const pw.BoxDecoration(
+                            padding: const pw.EdgeInsets.only(bottom: 2, top: 2),
+                           /* decoration: const pw.BoxDecoration(
                                 border: pw.Border(
                                     bottom: pw.BorderSide(color: PdfColors.grey),
                                     right: pw.BorderSide(color: PdfColors.grey))
-                            ),
+                            ),*/
                             child: pw.Text(total_other_charges.toString(),
                               style: pw.TextStyle(fontWeight: pw.FontWeight.bold),),
                           ),
@@ -931,13 +970,13 @@ class _PrintFormatThreeState extends State<PrintFormatThree> {
                           flex: 2,
                           child: pw.Container(
                             padding: const pw.EdgeInsets.only(
-                                bottom: 10, top: 10, left: 10),
-                            decoration: const pw.BoxDecoration(
+                                bottom: 2, top: 2, left: 10),
+                            /*decoration: const pw.BoxDecoration(
                                 border: pw.Border(
                                     bottom: pw.BorderSide(color: PdfColors.grey),
                                     left: pw.BorderSide(color: PdfColors.grey))
-                            ),
-                            child: pw.Text("(TOTAL CHARGES)",
+                            ),*/
+                            child: pw.Text("TOTAL CHARGES",
                               style: pw.TextStyle(fontWeight: pw.FontWeight.bold),),
                           ),
                         ),
@@ -945,13 +984,13 @@ class _PrintFormatThreeState extends State<PrintFormatThree> {
                           flex: 1,
                           child: pw.Container(
                             alignment: pw.Alignment.center,
-                            padding: const pw.EdgeInsets.only(bottom: 10, top: 10),
-                            decoration: const pw.BoxDecoration(
+                            padding: const pw.EdgeInsets.only(bottom: 2, top: 2),
+                           /* decoration: const pw.BoxDecoration(
                                 border: pw.Border(
                                     bottom: pw.BorderSide(color: PdfColors.grey),
                                     left: pw.BorderSide(color: PdfColors.grey))
-                            ),
-                            child: pw.Text(total_charges.toString(),
+                            ),*/
+                            child: pw.Text("("+total_charges.toString()+") ",
                               style: pw.TextStyle(fontWeight: pw.FontWeight.bold),),
                           ),
                         ),
@@ -967,13 +1006,13 @@ class _PrintFormatThreeState extends State<PrintFormatThree> {
                           flex: 2,
                           child: pw.Container(
                             alignment: pw.Alignment.center,
-                            padding: const pw.EdgeInsets.only(bottom: 10, top: 10),
-                            decoration: const pw.BoxDecoration(
+                            padding: const pw.EdgeInsets.only(bottom: 2, top: 2),
+                           /* decoration: const pw.BoxDecoration(
                                 border: pw.Border(
                                     bottom: pw.BorderSide(color: PdfColors.grey),
                                     left: pw.BorderSide(color: PdfColors.grey))
-                            ),
-                            child:  pw.Text("(FREIGHT)",
+                            ),*/
+                            child:  pw.Text("FREIGHT",
                               style: pw.TextStyle(fontWeight: pw.FontWeight.bold),),
                           ),
                         ),
@@ -981,12 +1020,12 @@ class _PrintFormatThreeState extends State<PrintFormatThree> {
                           flex: 1,
                           child: pw.Container(
                             alignment: pw.Alignment.center,
-                            padding: const pw.EdgeInsets.only(bottom: 10, top: 10),
-                            decoration: const pw.BoxDecoration(
+                            padding: const pw.EdgeInsets.only(bottom: 2, top: 2),
+                           /* decoration: const pw.BoxDecoration(
                                 border: pw.Border(
                                     bottom: pw.BorderSide(color: PdfColors.grey),
                                     right: pw.BorderSide(color: PdfColors.grey))
-                            ),
+                            ),*/
                             child: pw.Text(total_freight_charges.toString(),
                               style:  pw.TextStyle(fontWeight: pw.FontWeight.bold),),
                           ),
@@ -999,13 +1038,13 @@ class _PrintFormatThreeState extends State<PrintFormatThree> {
                           flex: 2,
                           child: pw.Container(
                             padding: const pw.EdgeInsets.only(
-                                bottom: 10, top: 10, left: 10),
-                            decoration: const pw.BoxDecoration(
+                                bottom: 2, top: 2, left: 10),
+                            /*decoration: const pw.BoxDecoration(
                                 border: pw.Border(
                                     bottom: pw.BorderSide(color: PdfColors.grey),
                                     left: pw.BorderSide(color: PdfColors.grey))
-                            ),
-                            child: pw.Text("(TOTAL AMT)",
+                            ),*/
+                            child: pw.Text("TOTAL AMT",
                               style: pw.TextStyle(fontWeight: pw.FontWeight.bold),),
                           ),
                         ),
@@ -1013,14 +1052,20 @@ class _PrintFormatThreeState extends State<PrintFormatThree> {
                           flex: 1,
                           child: pw.Container(
                             alignment: pw.Alignment.center,
-                            padding: const pw.EdgeInsets.only(bottom: 10, top: 10),
-                            decoration: const pw.BoxDecoration(
+                            padding: const pw.EdgeInsets.only(bottom: 2, top: 2),
+                            /*decoration: const pw.BoxDecoration(
                                 border: pw.Border(
                                     bottom: pw.BorderSide(color: PdfColors.grey),
                                     left: pw.BorderSide(color: PdfColors.grey))
-                            ),
-                            child: pw.Text(total_amt.toString(),
-                              style: pw.TextStyle(fontWeight: pw.FontWeight.bold),),
+                            ),*/
+                            child: pw.Column(
+                              children: [
+                                pw.Divider(color: PdfColors.black,height: 5),
+                                pw.Text(total_amt.toString(),
+                                  style: pw.TextStyle(fontWeight: pw.FontWeight.bold),),
+                                pw.Divider(color: PdfColors.black,height: 5),
+                              ],
+                            )
                           ),
                         ),
                       ],
@@ -1035,13 +1080,13 @@ class _PrintFormatThreeState extends State<PrintFormatThree> {
                           flex: 2,
                           child: pw.Container(
                             alignment: pw.Alignment.center,
-                            padding: const pw.EdgeInsets.only(bottom: 10, top: 10),
-                            decoration: const pw.BoxDecoration(
+                            padding: const pw.EdgeInsets.only(bottom: 2, top: 2),
+                            /*decoration: const pw.BoxDecoration(
                                 border: pw.Border(
                                     bottom: pw.BorderSide(color: PdfColors.grey),
                                     left: pw.BorderSide(color: PdfColors.grey))
-                            ),
-                            child: pw.Text("(LABOUR)",
+                            ),*/
+                            child: pw.Text("LABOUR",
                               style: pw.TextStyle(fontWeight: pw.FontWeight.bold),),
                           ),
                         ),
@@ -1049,12 +1094,12 @@ class _PrintFormatThreeState extends State<PrintFormatThree> {
                           flex: 1,
                           child: pw.Container(
                             alignment: pw.Alignment.center,
-                            padding: const pw.EdgeInsets.only(bottom: 10, top: 10),
-                            decoration: const pw.BoxDecoration(
+                            padding: const pw.EdgeInsets.only(bottom: 2, top: 2),
+                            /*decoration: const pw.BoxDecoration(
                                 border: pw.Border(
                                     bottom: pw.BorderSide(color: PdfColors.grey),
                                     right: pw.BorderSide(color: PdfColors.grey))
-                            ),
+                            ),*/
                             child: pw.Text(total_labour.toString(),
                               style: pw.TextStyle(fontWeight: pw.FontWeight.bold),),
                           ),
