@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:isar/isar.dart';
 import 'package:mandi_app/model/sale_model.dart';
 import 'package:mandi_app/utils/isar_provider.dart';
+import 'package:mandi_app/view/widgets/custom_drop_down_option_view.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 final GlobalKey<SfDataGridState> _dataGridKey = GlobalKey<SfDataGridState>();
@@ -33,7 +34,9 @@ class _TabularViewState extends State<TabularView> {
     stateSetter(fn) {
       setState(fn);
     }
-    selectedDate = DateTime.now().toString().substring(0,10); //to show today's date items
+
+    selectedDate =
+        DateTime.now().toString().substring(0, 10); //to show today's date items
     sale = _MyDataSource([], _dataGridController, stateSetter);
   }
 
@@ -44,6 +47,7 @@ class _TabularViewState extends State<TabularView> {
     stateSetter(fn) {
       setState(fn);
     }
+
     loadedData.forEach((element) {
       if (selectedDate != "") {
         if (element.creationDate.toString().substring(0, 10) == selectedDate) {
@@ -82,6 +86,7 @@ class _TabularViewState extends State<TabularView> {
               stateSetter(fn) {
                 setState(fn);
               }
+
               saleModel.clear();
               sale = _MyDataSource(saleModel, _dataGridController, stateSetter);
 
@@ -108,9 +113,9 @@ class _TabularViewState extends State<TabularView> {
                   setState(fn);
                 }
 
-
                 saleModel.clear();
-                sale = _MyDataSource(saleModel, _dataGridController, stateSetter);
+                sale =
+                    _MyDataSource(saleModel, _dataGridController, stateSetter);
               }
               setState(() {});
             },
@@ -139,11 +144,16 @@ class _TabularViewState extends State<TabularView> {
                           onPressed: () {
                             Navigator.pop(context);
                             selected_vcl_no = vclArray[index];
-                            if(vclArray[index] == "All"){ selectedDate = ""; selected_vcl_no = "";};
+                            if (vclArray[index] == "All") {
+                              selectedDate = "";
+                              selected_vcl_no = "";
+                            }
+                            ;
                             vclArray.clear();
                             stateSetter(fn) {
                               setState(fn);
                             }
+
                             saleModel.clear();
                             sale = _MyDataSource(
                                 saleModel, _dataGridController, stateSetter);
@@ -174,367 +184,379 @@ class _TabularViewState extends State<TabularView> {
             stateSetter(fn) {
               setState(fn);
             }
+
             snapshot.data!.forEach((element) {
-               if (selected_vcl_no != "" && selectedDate != "") {
-                if (element.vclNo.toString() == selected_vcl_no && element.creationDate.toString().substring(0, 10) == selectedDate) {
+              if (selected_vcl_no != "" && selectedDate != "") {
+                if (element.vclNo.toString() == selected_vcl_no &&
+                    element.creationDate.toString().substring(0, 10) ==
+                        selectedDate) {
                   saleModel.add(element);
                 }
-               }else if (selectedDate != "" || selected_vcl_no != "") {
-                 if (element.creationDate.toString().substring(0, 10) == selectedDate) {
-                   saleModel.add(element);
-                 }else if(element.vclNo.toString() == selected_vcl_no){
-                   saleModel.add(element);
-                 }
-               }else{
-                 saleModel.add(element);
-               }
+              } else if (selectedDate != "" || selected_vcl_no != "") {
+                if (element.creationDate.toString().substring(0, 10) ==
+                    selectedDate) {
+                  saleModel.add(element);
+                } else if (element.vclNo.toString() == selected_vcl_no) {
+                  saleModel.add(element);
+                }
+              } else {
+                saleModel.add(element);
+              }
             });
             sale = _MyDataSource(saleModel, _dataGridController, stateSetter);
-            return sale.updatedData.isEmpty ?Center(child: Text("No record found"),) : SfDataGrid(
-              source: sale,
-              key: _dataGridKey,
-              allowColumnsResizing: true,
-              editingGestureType: EditingGestureType.tap,
-
-              allowEditing: true,
-              selectionMode: SelectionMode.single,
-              navigationMode: GridNavigationMode.cell,
-              headerGridLinesVisibility: GridLinesVisibility.both,
-              gridLinesVisibility: GridLinesVisibility.both,
-              horizontalScrollPhysics: const AlwaysScrollableScrollPhysics(),
-              columnWidthMode: ColumnWidthMode.fitByCellValue,
-              headerRowHeight: 50,
-              rowHeight: 40,
-              columns: <GridColumn>[
-                GridColumn(
-                  allowEditing: false,
-                  columnName: 'CheckBox',
-                  label: Container(
-                    color: Colors.grey[100],
-                    alignment: Alignment.center,
-                    child: Checkbox(
-                      tristate: true,
-                      value: isHeaderCheckboxState,
-                      onChanged: (value) {
-                        if (value == true && isHeaderCheckboxState == false) {
-                          for (var element in sale.saleData) {
-                            element.getCells()[0] = const DataGridCell<bool>(
-                                columnName: 'CheckBox', value: true);
-                          }
-                          _dataGridController.selectedRows = sale.rows;
-                          isHeaderCheckboxState = value;
-                        } else if (value == null &&
-                            isHeaderCheckboxState == true) {
-                          for (var element in sale.saleData) {
-                            element.getCells()[0] = const DataGridCell<bool>(
-                                columnName: 'CheckBox', value: false);
-                          }
-                          _dataGridController.selectedRows = [];
-                          isHeaderCheckboxState = false;
-                        } else {
-                          for (var element in sale.saleData) {
-                            element.getCells()[0] = const DataGridCell<bool>(
-                                columnName: 'CheckBox', value: true);
-                          }
-                          _dataGridController.selectedRows = sale.rows;
-                          isHeaderCheckboxState = true;
-                        }
-                        // To update the datagrid rows.
-                        sale.updateDataGrid();
-                        // To update the datagrid view.
-                        setState(() {});
-                      },
-                    ),
-                  ),
-                ),
-                GridColumn(
-                  visible: false,
-                  allowEditing: false,
-                  columnName: 'id',
-                  label: Container(
-                    color: Colors.grey[100],
-                    alignment: Alignment.center,
-                    child: const Text(
-                      'Id',
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ),
-                GridColumn(
-                  columnName: 'srNo',
-                  label: Container(
-                    alignment: Alignment.center,
-                    color: Colors.grey[100],
-                    child: const Text(
-                      'Sr No',
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ),
-                GridColumn(
-                  columnName: 'vclNo',
-                  label: Container(
-                    color: Colors.grey[100],
-                    alignment: Alignment.center,
-                    child: const Text(
-                      'VCL No',
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ),
-                GridColumn(
-                  columnName: 'supplierName',
-                  label: Container(
-                    color: Colors.grey[100],
-                    alignment: Alignment.center,
-                    child: const Text(
-                      'Supplier Name',
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ),
-                GridColumn(
-                  columnName: 'farmerName',
-                  label: Container(
-                    color: Colors.grey[100],
-                    alignment: Alignment.center,
-                    child: const Text(
-                      'Farmer Name',
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ),
-                GridColumn(
-                  columnName: 'lot',
-                  label: Container(
-                    color: Colors.grey[100],
-                    alignment: Alignment.center,
-                    child: const Text(
-                      'Lot',
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ),
-                GridColumn(
-                  columnName: 'sellerNug',
-                  label: Container(
-                    color: Colors.grey[100],
-                    alignment: Alignment.center,
-                    child: const Text(
-                      'S. Nug',
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ),
-                GridColumn(
-                  columnName: 'avgWeight',
-                  label: Container(
-                    color: Colors.grey[100],
-                    alignment: Alignment.center,
-                    child: const Text(
-                      'Avg Weight',
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ),
-                GridColumn(
-                  columnName: 'sellerRate',
-                  label: Container(
-                    color: Colors.grey[100],
-                    alignment: Alignment.center,
-                    child: const Text(
-                      'Seller Rate',
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ),
-                GridColumn(
-                  columnName: 'customerRate',
-                  label: Container(
-                    color: Colors.grey[100],
-                    alignment: Alignment.center,
-                    child: const Text(
-                      'Customer Rate',
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ),
-                GridColumn(
-                  columnName: 'customerName',
-                  label: Container(
-                    color: Colors.grey[100],
-                    alignment: Alignment.center,
-                    child: const Text(
-                      'Customer Name',
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ),
-                GridColumn(
-                  columnName: 'customerNug',
-                  label: Container(
-                    color: Colors.grey[100],
-                    alignment: Alignment.center,
-                    child: const Text(
-                      'C. Nug',
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ),
-                GridColumn(
-                  columnName: 'netWeight',
-                  label: Container(
-                    color: Colors.grey[100],
-                    alignment: Alignment.center,
-                    child: const Text(
-                      'Net Weight',
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ),
-                GridColumn(
-                  columnName: 'itemName',
-                  label: Container(
-                    color: Colors.grey[100],
-                    alignment: Alignment.center,
-                    child: const Text(
-                      'ItemName',
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ),
-                GridColumn(
-                  allowEditing: false,
-                  columnName: 'grossWeight',
-                  label: Container(
-                    color: Colors.grey[100],
-                    alignment: Alignment.center,
-                    child: const Text(
-                      'Gross Weight',
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ),
-                GridColumn(
-                  columnName: 'frightRate',
-                  label: Container(
-                    color: Colors.grey[100],
-                    alignment: Alignment.center,
-                    child: const Text(
-                      'Fright Rate',
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ),
-                GridColumn(
-                  columnName: 'otherCharges',
-                  label: Container(
-                    color: Colors.grey[100],
-                    alignment: Alignment.center,
-                    child: const Text(
-                      'Other Charges',
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ),
-                GridColumn(
-                  columnName: 'labourRate',
-                  label: Container(
-                    color: Colors.grey[100],
-                    alignment: Alignment.center,
-                    child: const Text(
-                      'Labour Rate',
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ),
-                GridColumn(
-                  allowEditing: false,
-                  columnName: 'cut',
-                  label: Container(
-                    color: Colors.grey[100],
-                    alignment: Alignment.center,
-                    child: const Text(
-                      'Cut',
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ),
-                GridColumn(
-                  columnName: 'weight',
-                  label: Container(
-                    color: Colors.grey[100],
-                    alignment: Alignment.center,
-                    child: const Text(
-                      'Weights',
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ),
-                GridColumn(
-                  allowEditing: false,
-                  columnName: 'creationDate',
-                  label: Container(
-                    color: Colors.grey[100],
-                    alignment: Alignment.center,
-                    child: const Text(
-                      'Creation Date',
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ),
-                GridColumn(
-                  visible: false,
-                  allowEditing: false,
-                  columnName: 'basicAmt',
-                  label: Container(
-                    color: Colors.grey[100],
-                    alignment: Alignment.center,
-                    child: const Text(
-                      'Basic Amount',
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ),
-                GridColumn(
-                  visible: false,
-                  allowEditing: false,
-                  columnName: 'bikriAmt',
-                  label: Container(
-                    color: Colors.grey[100],
-                    alignment: Alignment.center,
-                    child: const Text(
-                      'Bikri Amount',
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ),
-              ],
-              controller: _dataGridController,
-            );
+            return sale.updatedData.isEmpty
+                ? Center(
+                    child: Text("No record found"),
+                  )
+                : SfDataGrid(
+                    source: sale,
+                    key: _dataGridKey,
+                    allowColumnsResizing: true,
+                    editingGestureType: EditingGestureType.tap,
+                    allowEditing: true,
+                    selectionMode: SelectionMode.single,
+                    navigationMode: GridNavigationMode.cell,
+                    headerGridLinesVisibility: GridLinesVisibility.both,
+                    gridLinesVisibility: GridLinesVisibility.both,
+                    horizontalScrollPhysics:
+                        const AlwaysScrollableScrollPhysics(),
+                    columnWidthMode: ColumnWidthMode.fitByCellValue,
+                    headerRowHeight: 50,
+                    rowHeight: 40,
+                    columns: <GridColumn>[
+                      GridColumn(
+                        allowEditing: false,
+                        columnName: 'CheckBox',
+                        label: Container(
+                          color: Colors.grey[100],
+                          alignment: Alignment.center,
+                          child: Checkbox(
+                            tristate: true,
+                            value: isHeaderCheckboxState,
+                            onChanged: (value) {
+                              if (value == true &&
+                                  isHeaderCheckboxState == false) {
+                                for (var element in sale.saleData) {
+                                  element.getCells()[0] =
+                                      const DataGridCell<bool>(
+                                          columnName: 'CheckBox', value: true);
+                                }
+                                _dataGridController.selectedRows = sale.rows;
+                                isHeaderCheckboxState = value;
+                              } else if (value == null &&
+                                  isHeaderCheckboxState == true) {
+                                for (var element in sale.saleData) {
+                                  element.getCells()[0] =
+                                      const DataGridCell<bool>(
+                                          columnName: 'CheckBox', value: false);
+                                }
+                                _dataGridController.selectedRows = [];
+                                isHeaderCheckboxState = false;
+                              } else {
+                                for (var element in sale.saleData) {
+                                  element.getCells()[0] =
+                                      const DataGridCell<bool>(
+                                          columnName: 'CheckBox', value: true);
+                                }
+                                _dataGridController.selectedRows = sale.rows;
+                                isHeaderCheckboxState = true;
+                              }
+                              // To update the datagrid rows.
+                              sale.updateDataGrid();
+                              // To update the datagrid view.
+                              setState(() {});
+                            },
+                          ),
+                        ),
+                      ),
+                      GridColumn(
+                        visible: false,
+                        allowEditing: false,
+                        columnName: 'id',
+                        label: Container(
+                          color: Colors.grey[100],
+                          alignment: Alignment.center,
+                          child: const Text(
+                            'Id',
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ),
+                      GridColumn(
+                        columnName: 'srNo',
+                        label: Container(
+                          alignment: Alignment.center,
+                          color: Colors.grey[100],
+                          child: const Text(
+                            'Sr No',
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ),
+                      GridColumn(
+                        columnName: 'vclNo',
+                        label: Container(
+                          color: Colors.grey[100],
+                          alignment: Alignment.center,
+                          child: const Text(
+                            'VCL No',
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ),
+                      GridColumn(
+                        columnName: 'supplierName',
+                        label: Container(
+                          color: Colors.grey[100],
+                          alignment: Alignment.center,
+                          child: const Text(
+                            'Supplier Name',
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ),
+                      GridColumn(
+                        columnName: 'farmerName',
+                        label: Container(
+                          color: Colors.grey[100],
+                          alignment: Alignment.center,
+                          child: const Text(
+                            'Farmer Name',
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ),
+                      GridColumn(
+                        columnName: 'lot',
+                        label: Container(
+                          color: Colors.grey[100],
+                          alignment: Alignment.center,
+                          child: const Text(
+                            'Lot',
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ),
+                      GridColumn(
+                        columnName: 'sellerNug',
+                        label: Container(
+                          color: Colors.grey[100],
+                          alignment: Alignment.center,
+                          child: const Text(
+                            'S. Nug',
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ),
+                      GridColumn(
+                        columnName: 'avgWeight',
+                        label: Container(
+                          color: Colors.grey[100],
+                          alignment: Alignment.center,
+                          child: const Text(
+                            'Avg Weight',
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ),
+                      GridColumn(
+                        columnName: 'sellerRate',
+                        label: Container(
+                          color: Colors.grey[100],
+                          alignment: Alignment.center,
+                          child: const Text(
+                            'Seller Rate',
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ),
+                      GridColumn(
+                        columnName: 'customerRate',
+                        label: Container(
+                          color: Colors.grey[100],
+                          alignment: Alignment.center,
+                          child: const Text(
+                            'Customer Rate',
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ),
+                      GridColumn(
+                        columnName: 'customerName',
+                        label: Container(
+                          color: Colors.grey[100],
+                          alignment: Alignment.center,
+                          child: const Text(
+                            'Customer Name',
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ),
+                      GridColumn(
+                        columnName: 'customerNug',
+                        label: Container(
+                          color: Colors.grey[100],
+                          alignment: Alignment.center,
+                          child: const Text(
+                            'C. Nug',
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ),
+                      GridColumn(
+                        columnName: 'netWeight',
+                        label: Container(
+                          color: Colors.grey[100],
+                          alignment: Alignment.center,
+                          child: const Text(
+                            'Net Weight',
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ),
+                      GridColumn(
+                        columnName: 'itemName',
+                        label: Container(
+                          color: Colors.grey[100],
+                          alignment: Alignment.center,
+                          child: const Text(
+                            'ItemName',
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ),
+                      GridColumn(
+                        allowEditing: false,
+                        columnName: 'grossWeight',
+                        label: Container(
+                          color: Colors.grey[100],
+                          alignment: Alignment.center,
+                          child: const Text(
+                            'Gross Weight',
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ),
+                      GridColumn(
+                        columnName: 'frightRate',
+                        label: Container(
+                          color: Colors.grey[100],
+                          alignment: Alignment.center,
+                          child: const Text(
+                            'Fright Rate',
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ),
+                      GridColumn(
+                        columnName: 'otherCharges',
+                        label: Container(
+                          color: Colors.grey[100],
+                          alignment: Alignment.center,
+                          child: const Text(
+                            'Other Charges',
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ),
+                      GridColumn(
+                        columnName: 'labourRate',
+                        label: Container(
+                          color: Colors.grey[100],
+                          alignment: Alignment.center,
+                          child: const Text(
+                            'Labour Rate',
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ),
+                      GridColumn(
+                        allowEditing: false,
+                        columnName: 'cut',
+                        label: Container(
+                          color: Colors.grey[100],
+                          alignment: Alignment.center,
+                          child: const Text(
+                            'Cut',
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ),
+                      GridColumn(
+                        columnName: 'weight',
+                        label: Container(
+                          color: Colors.grey[100],
+                          alignment: Alignment.center,
+                          child: const Text(
+                            'Weights',
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ),
+                      GridColumn(
+                        allowEditing: false,
+                        columnName: 'creationDate',
+                        label: Container(
+                          color: Colors.grey[100],
+                          alignment: Alignment.center,
+                          child: const Text(
+                            'Creation Date',
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ),
+                      GridColumn(
+                        visible: false,
+                        allowEditing: false,
+                        columnName: 'basicAmt',
+                        label: Container(
+                          color: Colors.grey[100],
+                          alignment: Alignment.center,
+                          child: const Text(
+                            'Basic Amount',
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ),
+                      GridColumn(
+                        visible: false,
+                        allowEditing: false,
+                        columnName: 'bikriAmt',
+                        label: Container(
+                          color: Colors.grey[100],
+                          alignment: Alignment.center,
+                          child: const Text(
+                            'Bikri Amount',
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ),
+                    ],
+                    controller: _dataGridController,
+                  );
           }
         },
       ),
@@ -629,14 +651,14 @@ class _MyDataSource extends DataGridSource {
       int index = effectiveRows.indexOf(row);
       Color color = index.isOdd ? Colors.grey[100]! : Colors.white;
       var lotValue;
-      if(e.columnName == "lot"){
-        if(e.value == 0.25){
+      if (e.columnName == "lot") {
+        if (e.value == 0.25) {
           lotValue = "Plate";
-        }else if(e.value == 1.25){
+        } else if (e.value == 1.25) {
           lotValue = "Box";
-        }else if(e.value == 0.5){
+        } else if (e.value == 0.5) {
           lotValue = "Daba";
-        }else if(e.value == 3){
+        } else if (e.value == 3) {
           lotValue = "Peti";
         }
       }
@@ -698,13 +720,16 @@ class _MyDataSource extends DataGridSource {
   }
 
   @override
-  Future<void> onCellSubmit(DataGridRow dataGridRow, RowColumnIndex rowColumnIndex, GridColumn column) {
+  Future<void> onCellSubmit(DataGridRow dataGridRow,
+      RowColumnIndex rowColumnIndex, GridColumn column) {
     // Call When user submit edited value
     // TODO: implement onCellSubmit
     final dynamic oldValue = dataGridRow
             .getCells()
-            .firstWhere((DataGridCell dataGridCell) => dataGridCell.columnName == column.columnName)
-            .value ?? '';
+            .firstWhere((DataGridCell dataGridCell) =>
+                dataGridCell.columnName == column.columnName)
+            .value ??
+        '';
 
     final int dataRowIndex = saleData.indexOf(dataGridRow);
 
@@ -808,15 +833,16 @@ class _MyDataSource extends DataGridSource {
   }
 
   @override
-  bool onCellBeginEdit(DataGridRow dataGridRow, RowColumnIndex rowColumnIndex, GridColumn column) {
+  bool onCellBeginEdit(DataGridRow dataGridRow, RowColumnIndex rowColumnIndex,
+      GridColumn column) {
     // TODO: implement onCellBeginEdit
 
     return super.onCellBeginEdit(dataGridRow, rowColumnIndex, column);
-
   }
 
   @override
-  Widget? buildEditWidget(DataGridRow dataGridRow, RowColumnIndex rowColumnIndex, GridColumn column, CellSubmit submitCell) {
+  Widget? buildEditWidget(DataGridRow dataGridRow,
+      RowColumnIndex rowColumnIndex, GridColumn column, CellSubmit submitCell) {
     // Text going to display on editable widget
     final String displayText = dataGridRow
             .getCells()
@@ -874,18 +900,18 @@ class _MyDataSource extends DataGridSource {
             listMap[task.itemName] = [];
           }
           listMap[task.itemName]!.add(task);
-        }else if (column.columnName == 'lot') {
-         listItem = ["Peti","Daba","Box","Plate"];
+        } else if (column.columnName == 'lot') {
+          listItem = ["Peti", "Daba", "Box", "Plate"];
 
-         if(displayText == "0.25"){
-           lotValue = "Plate";
-         }else if(displayText == "1.25"){
-           lotValue = "Box";
-         }else if(displayText == "0.5"){
-           lotValue = "Daba";
-         }else if(displayText == "3"){
-           lotValue = "Peti";
-         }
+          if (displayText == "0.25") {
+            lotValue = "Plate";
+          } else if (displayText == "1.25") {
+            lotValue = "Box";
+          } else if (displayText == "0.5") {
+            lotValue = "Daba";
+          } else if (displayText == "3") {
+            lotValue = "Peti";
+          }
         }
       });
 
@@ -893,143 +919,19 @@ class _MyDataSource extends DataGridSource {
         if (key != "") listItem.add('$key');
       });
     }
-    if(column.columnName == 'lot'){
+    if (column.columnName == 'lot') {
       editingController.text = lotValue;
-    }else{
+    } else {
       editingController.text = displayText;
     }
-    editingController.selection = TextSelection(baseOffset: 0, extentOffset:editingController.text.length);
+    editingController.selection = TextSelection(
+        baseOffset: 0, extentOffset: editingController.text.length);
 
     return Container(
       padding: const EdgeInsets.all(8.0),
       alignment: isNumericType ? Alignment.centerRight : Alignment.centerLeft,
-      child: column.columnName == 'lot'? RawAutocomplete<String>(
-        textEditingController: editingController,
-        focusNode: FocusNode(),
-        optionsBuilder: (TextEditingValue textEditingValue) {
-          if (textEditingValue.text == '') {
-            return listItem;
-          } else {
-            List<String> matches = <String>[];
-            matches.addAll(listItem);
-            matches.retainWhere((s) {
-              return s
-                  .toLowerCase()
-                  .contains(textEditingValue.text.toLowerCase());
-            });
-            return matches;
-          }
-        },
-        onSelected: (String selection) {
-          if(selection == "Plate"){
-            newCellValue = 0.25;
-          }else if(selection == "Box"){
-            newCellValue = 1.25;
-          }else if(selection == "Daba"){
-            newCellValue = 0.5;
-          }else if(selection == "Peti"){
-            newCellValue = 3;
-          }
-          _setState(() {});
-          submitCell();
-        },
-        fieldViewBuilder: (
-            BuildContext context,
-            TextEditingController textEditingController,
-            FocusNode focusNode,
-            VoidCallback onFieldSubmitted,
-            ) {
-
-          return TextFormField(
-            keyboardType: TextInputType.text,
-            controller: textEditingController,
-            focusNode: focusNode,
-            onFieldSubmitted: (String value) {
-              onFieldSubmitted();
-            },
-            onTap: () {
-              // Select all text when the field is tapped
-              textEditingController.selection = TextSelection(
-                baseOffset: 0,
-                extentOffset: textEditingController.text.length,
-              );
-            },
-            onChanged: (selection) {
-              if(selection == "Plate"){
-                newCellValue = 0.25;
-              }else if(selection == "Box"){
-                newCellValue = 1.25;
-              }else if(selection == "Daba"){
-                newCellValue = 0.5;
-              }else if(selection == "Peti"){
-                newCellValue = 3;
-              }
-            },
-          );
-        },
-        optionsViewBuilder: (
-            BuildContext context,
-            AutocompleteOnSelected<String> onSelected,
-            Iterable<String> options,
-            ) {
-          return Align(
-            alignment: Alignment.topLeft,
-            child: Material(
-              elevation: 4.0,
-              child: SizedBox(
-                height: 200.0,
-                child: ListView.builder(
-                  padding: const EdgeInsets.all(8.0),
-                  itemCount: options.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    final String option = options.elementAt(index);
-                    return GestureDetector(
-                      onTap: () {
-                        onSelected(option);
-                        _setState(() {});
-                      },
-                      child: ListTile(
-                        title: Text(option),
-                      ),
-                    );
-                  },
-                ),
-              ),
-            ),
-          );
-        },
-      ): column.columnName != 'supplierName' &&
-              column.columnName != 'farmerName' &&
-              column.columnName != 'itemName' &&
-              column.columnName != 'customerName'
-          ? TextFormField(
-              enableSuggestions: true,
-              autofocus: true,
-              controller: editingController,
-              textAlign: isNumericType ? TextAlign.right : TextAlign.left,
-              decoration: const InputDecoration(
-                contentPadding: EdgeInsets.fromLTRB(0, 0, 0, 16.0),
-              ),
-              keyboardType: isNumericType ? TextInputType.number : TextInputType.text,
-              onChanged: (String value) {
-                if (value.isNotEmpty) {
-                  if (isNumericType) {
-                    newCellValue = int.parse(value);
-                  } else if (isDoubleType) {
-                    newCellValue = double.parse(value);
-                  } else {
-                    newCellValue = value;
-                  }
-                } else {
-                  newCellValue = null;
-                }
-              },
-              onSaved: (String? value) {
-                // Calls when cell Submitted
-                submitCell();
-              },
-            ) :
-          RawAutocomplete<String>(
+      child: column.columnName == 'lot'
+          ? RawAutocomplete<String>(
               textEditingController: editingController,
               focusNode: FocusNode(),
               optionsBuilder: (TextEditingValue textEditingValue) {
@@ -1047,8 +949,16 @@ class _MyDataSource extends DataGridSource {
                 }
               },
               onSelected: (String selection) {
+                if (selection == "Plate") {
+                  newCellValue = 0.25;
+                } else if (selection == "Box") {
+                  newCellValue = 1.25;
+                } else if (selection == "Daba") {
+                  newCellValue = 0.5;
+                } else if (selection == "Peti") {
+                  newCellValue = 3;
+                }
                 _setState(() {});
-                newCellValue = selection;
                 submitCell();
               },
               fieldViewBuilder: (
@@ -1057,7 +967,6 @@ class _MyDataSource extends DataGridSource {
                 FocusNode focusNode,
                 VoidCallback onFieldSubmitted,
               ) {
-
                 return TextFormField(
                   keyboardType: TextInputType.text,
                   controller: textEditingController,
@@ -1072,9 +981,16 @@ class _MyDataSource extends DataGridSource {
                       extentOffset: textEditingController.text.length,
                     );
                   },
-                  onChanged: (newValue) {
-
-                    newCellValue = newValue;
+                  onChanged: (selection) {
+                    if (selection == "Plate") {
+                      newCellValue = 0.25;
+                    } else if (selection == "Box") {
+                      newCellValue = 1.25;
+                    } else if (selection == "Daba") {
+                      newCellValue = 0.5;
+                    } else if (selection == "Peti") {
+                      newCellValue = 3;
+                    }
                   },
                 );
               },
@@ -1083,34 +999,102 @@ class _MyDataSource extends DataGridSource {
                 AutocompleteOnSelected<String> onSelected,
                 Iterable<String> options,
               ) {
-
-                return Align(
-                  alignment: Alignment.topLeft,
-                  child: Material(
-                    elevation: 4.0,
-                    child: SizedBox(
-                      height: 200.0,
-                      child: ListView.builder(
-                        padding: const EdgeInsets.all(8.0),
-                        itemCount: options.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          final String option = options.elementAt(index);
-                          return GestureDetector(
-                            onTap: () {
-                              onSelected(option);
-                              _setState(() {});
-                            },
-                            child: ListTile(
-                              title: Text(option),
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                  ),
+                return DropDownOptionView(
+                  onSelected: onSelected,
+                  options: options,
                 );
               },
-            ),
+            )
+          : column.columnName != 'supplierName' &&
+                  column.columnName != 'farmerName' &&
+                  column.columnName != 'itemName' &&
+                  column.columnName != 'customerName'
+              ? TextFormField(
+                  enableSuggestions: true,
+                  autofocus: true,
+                  controller: editingController,
+                  textAlign: isNumericType ? TextAlign.right : TextAlign.left,
+                  decoration: const InputDecoration(
+                    contentPadding: EdgeInsets.fromLTRB(0, 0, 0, 16.0),
+                  ),
+                  keyboardType:
+                      isNumericType ? TextInputType.number : TextInputType.text,
+                  onChanged: (String value) {
+                    if (value.isNotEmpty) {
+                      if (isNumericType) {
+                        newCellValue = int.parse(value);
+                      } else if (isDoubleType) {
+                        newCellValue = double.parse(value);
+                      } else {
+                        newCellValue = value;
+                      }
+                    } else {
+                      newCellValue = null;
+                    }
+                  },
+                  onSaved: (String? value) {
+                    // Calls when cell Submitted
+                    submitCell();
+                  },
+                )
+              : RawAutocomplete<String>(
+                  textEditingController: editingController,
+                  focusNode: FocusNode(),
+                  optionsBuilder: (TextEditingValue textEditingValue) {
+                    if (textEditingValue.text == '') {
+                      return listItem;
+                    } else {
+                      List<String> matches = <String>[];
+                      matches.addAll(listItem);
+                      matches.retainWhere((s) {
+                        return s
+                            .toLowerCase()
+                            .contains(textEditingValue.text.toLowerCase());
+                      });
+                      return matches;
+                    }
+                  },
+                  onSelected: (String selection) {
+                    _setState(() {});
+                    newCellValue = selection;
+                    submitCell();
+                  },
+                  fieldViewBuilder: (
+                    BuildContext context,
+                    TextEditingController textEditingController,
+                    FocusNode focusNode,
+                    VoidCallback onFieldSubmitted,
+                  ) {
+                    return TextFormField(
+                      keyboardType: TextInputType.text,
+                      controller: textEditingController,
+                      focusNode: focusNode,
+                      onFieldSubmitted: (String value) {
+                        onFieldSubmitted();
+                      },
+                      onTap: () {
+                        // Select all text when the field is tapped
+                        textEditingController.selection = TextSelection(
+                          baseOffset: 0,
+                          extentOffset: textEditingController.text.length,
+                        );
+                      },
+                      onChanged: (newValue) {
+                        newCellValue = newValue;
+                      },
+                    );
+                  },
+                  optionsViewBuilder: (
+                    BuildContext context,
+                    AutocompleteOnSelected<String> onSelected,
+                    Iterable<String> options,
+                  ) {
+                    return DropDownOptionView(
+                      onSelected: onSelected,
+                      options: options,
+                    );
+                  },
+                ),
     );
   }
 
