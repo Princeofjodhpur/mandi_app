@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
@@ -10,6 +12,13 @@ class DropDownOptionView extends StatelessWidget {
   });
   Iterable<String> options;
   AutocompleteOnSelected<String> onSelected;
+  bool _handleKeyEvent(KeyEvent event) {
+    if (event is KeyDownEvent && event.logicalKey == LogicalKeyboardKey.enter) {
+      log("Key Pressed");
+      return true;
+    }
+    return false;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,11 +44,8 @@ class DropDownOptionView extends StatelessWidget {
                     print("Key pressed");
                   }
                 },
-                child: InkWell(
-                  onTap: () {
-                    onSelected(option);
-                    print("Selected value :  $option");
-                  },
+                child: GestureDetector(
+                  onTap: () => onSelected(option),
                   child: Builder(builder: (BuildContext context) {
                     final bool highlight =
                         AutocompleteHighlightedOption.of(context) == index;
@@ -47,6 +53,17 @@ class DropDownOptionView extends StatelessWidget {
                       SchedulerBinding.instance
                           .addPostFrameCallback((Duration timeStamp) {
                         Scrollable.ensureVisible(context, alignment: 0.5);
+                        HardwareKeyboard.instance.addHandler(
+                          (event) {
+                            if (event is KeyDownEvent &&
+                                event.logicalKey == LogicalKeyboardKey.enter) {
+                              onSelected(option);
+                              log("Key Pressed");
+                              return true;
+                            }
+                            return false;
+                          },
+                        );
                       });
                     }
                     return Container(
